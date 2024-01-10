@@ -148,5 +148,10 @@
     "id": "30333f0d7cbf409fae34d02ac84ecc86",
     "update_date": "2023-12-14",
     "post_title": "2023-12-14-Adapter Pattern(어댑터)"
+  },
+  {
+    "id": "f19c72dfd9f84d64b3fb798404fd80b0",
+    "update_date": "2024-01-10",
+    "post_title": "2024-01-10-파드 네트워크 이해하기"
   }
 ]
