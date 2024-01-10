@@ -8,7 +8,7 @@ tagline: # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Dongbee's Blog
-url: "https://han-0315.github.io"
+url: "https://www.handongbee.com"
 github:
   username: han-0315 # change to your github username
 
@@ -19,7 +19,7 @@ social:
     - https://github.com/han-0315
     - https://linkedin.com/in/dongbee-66226229a
 
-google_site_verification: 1234567890abcdefg # Google Search Console verification code
+google_site_verification: # Google Search Console verification code
 # ↑ --------------------------
 # The end of `jekyll-seo-tag` settings
 google_analytics:
