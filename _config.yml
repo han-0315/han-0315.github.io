@@ -1,8 +1,8 @@
 # The Site Configuration
 theme: jekyll-theme-chirpy
-lang: en
+lang: ko
 timezone: Asia/Seoul
-title: Dongbee # the main title
+title: 한많은 개발일기 # the main title
 
 tagline: # it will display as the sub-title
 
