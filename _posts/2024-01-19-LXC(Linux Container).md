@@ -13,13 +13,13 @@ LXC란?
 <!--more-->
 
 
-### LXC란?
+## LXC란?
 
 
 Linux Container의 약자로, 리눅스 인스턴스 내에서 컨테이너를 운용할 수 있게한다. [링크](https://linuxcontainers.org/lxc/introduction/)를 통해 공식문서를 확인할 수 있다. 특징을 살펴보면 Namespace, cgroup, chroots 등 Docker와 상당히 유사하다. VM과 같이 가상환경을 제공하고 싶지만, 리소스 낭비를 최소화하고 싶었던 개발자들은 LXC를 만들었다. 
 
 
-### Docker와 LXC
+## Docker와 LXC
 
 
 LXC가 나온 후 몇년 뒤  Docker가 나왔다. 둘은 약간의 차이가 있는데, LXC는 OS 수준의 가상화를 제공하고, Docker는 응용 수준의 가상화를 제공한다. 리소스 활용은 LXC가 더 효율적이나, 프로젝트를 배포하는 애플리케이션 수준에서는 Docker가 훨씬 편하다. Docker는 리눅스 컨테이너 기술을 이용하여 개발자에게 더 편리한 기능을 제공한다. 
@@ -28,7 +28,7 @@ LXC가 나온 후 몇년 뒤  Docker가 나왔다. 둘은 약간의 차이가 �
 - Dockfile: Dockerfile 혹은 Docker-compose를 통해 IaC 방식으로 쉽게 컨테이너를 설정할 수 있지만, LXC는 그렇지 않다.
 	- 네트워크 설정, 의존성 등 환경설정에 어려움이 많다. **즉, 일관된 환경을 제공하지 못한다.**
 
-### LXC 실행해보기
+## LXC 사용해보기
 
 - LXC 설치
 
@@ -169,8 +169,23 @@ Creating mycontainer
 	```
 
 
-### 마무리하며
+## 마무리하며
 
 
 컨테이너에 네트워크를 정상적으로 설정했다. 초기 컨테이너를 띄우면 아무런 네트워크 설정이 없다. Docker는 자동적으로 브릿지에 모든 컨테이너를 연결하나, LXC는 수동으로 설정해줘야한다. Docker와 유사하지만, 이것저것 설정해야 하는 것이 많아 불편했다. 추가적으로 Docker는 이미지 Layer를 공유하여 캐시로 사용할 수 있찌만 LXC는 지원하지 않는다고 한다. 인턴때만 해도 Docker 컨테이너 이미지 용량이 쌓여 거의 10~30GB로 쌓였다. Layer 방식은 Docker의 큰 장점같다.
+
+
+### 참고목록
+
+
+[https://www.redhat.com/ko/topics/containers/whats-a-linux-container](https://www.redhat.com/ko/topics/containers/whats-a-linux-container)
+
+
+[https://www.redswitches.com/blog/lxc-vs-docker/](https://www.redswitches.com/blog/lxc-vs-docker/)
+
+
+[https://linuxcontainers.org/lxc/introduction/](https://linuxcontainers.org/lxc/introduction/)
+
+
+[https://docs.docker.com/storage/storagedriver/](https://docs.docker.com/storage/storagedriver/)
 
