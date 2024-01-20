@@ -34,7 +34,7 @@ theme_mode: [light] # [light, dark]
 img_cdn: https://cdn.jsdelivr.net/gh/han-0315/han-0315.github.io@main
 
 # the avatar on sidebar, support local or CORS resources
-avatar: /assets/img/icon.png
+avatar: /assets/img/avatar.png
 
 # boolean type, the global switch for TOC in posts.
 toc: true
