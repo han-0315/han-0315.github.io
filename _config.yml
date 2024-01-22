@@ -52,11 +52,11 @@ comments:
   # Giscus options › https://giscus.app
   giscus:
     repo: han-0315/han-0315.github.io
-    repo_id: R_kgDOKrZhqg
+    repo_id: R_kgDOK_oNtA
     category: Comments
-    category_id: DIC_kwDOKrZhqs4Ca1ty
+    category_id: DIC_kwDOK_oNtM4CcmKf
     mapping: pathname
-    input_position: # optional, default to 'bottom'
+    input_position: bottom
     lang: ko
     reactions_enabled: # optional, default to the value of `1`
 
