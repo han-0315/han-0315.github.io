@@ -168,5 +168,10 @@
     "id": "86590244e8aa451d948c75770a0b38fd",
     "update_date": "2024-01-22",
     "post_title": "2024-01-22-Docker Storage"
+  },
+  {
+    "id": "db9b233e247d41588f49344c68a09602",
+    "update_date": "2024-01-24",
+    "post_title": "2024-01-24-Search Console 인덱싱자동화"
   }
 ]
