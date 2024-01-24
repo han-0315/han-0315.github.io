@@ -91,6 +91,9 @@ Indexing API와 관련된 공식 문서는 [링크](https://developers.google.co
 **[소스 코드]**
 
 
+프로젝트는 [GitHub](https://github.com/han-0315/AutoIndexing)를 통해서 확인할 수 있습니다.
+
+
 ```python
 import json
 import os
