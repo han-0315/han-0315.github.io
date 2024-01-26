@@ -11,7 +11,7 @@ mermaid: true
 ---
 이거하나로 Jekyll Chripy Blog 시작하기
 <!--more-->
-## GitHub 블로그 시작하기
+## 이거하나로 GitHub Blog 만들기
 ### Chirpy 테마 생성하기
 [Chirpy](https://github.com/cotes2020/chirpy-starter)를 클릭하여 리포지토리 우측상단의 "Use this template" 버튼을 클릭하여 리포지토리를 생성한다. 리포지토리 이름은 "[github user_name]-github.io"으로 설정한다. 
 이제 리포지토리의 Pages를 활성화한다.
