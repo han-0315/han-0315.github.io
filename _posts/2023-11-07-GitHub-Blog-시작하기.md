@@ -1,6 +1,6 @@
 ---
 layout: post
-title: GitHub Blog 시작하기 
+title: 이거하나로 GitHub Blog 만들기
 date: 2023-11-07 20:52 +0900
 description: 이거하나로 Jekyll Chripy Blog 시작하기
 category: [Jeckyll, Chirpy]
