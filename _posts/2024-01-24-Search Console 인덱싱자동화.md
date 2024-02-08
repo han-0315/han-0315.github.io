@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Google Search Console 인덱싱 자동화
+title: Google Search Console 인덱싱 자동화, 인덱싱 오류가 발생할 때
 date: 2024-01-24 09:10 +0900 
 description: Decorator Pattern
 category: [블로그, 인덱싱] 
@@ -88,10 +88,39 @@ Indexing API와 관련된 공식 문서는 [링크](https://developers.google.co
 2. 각 URL을 조회하여 인덱싱요청을 과거에 한적이 있는지 파악한다. 없다면, 404 에러를 발생시킨다.
 3. 404에러 URL은 새로운 페이지이므로 인덱싱 등록을 요청한다.
 
+**[의존성]**
+
+
+해당 코드는 아래의 버전으로 동작하기에 가상환경을 만드는 것이 좋다. 
+
+
+```bash
+python -m venv venv
+```
+
+
+코드를 입력하여 가상환경을 생성한다. 그러면 프로젝트에 venv 폴더가 생성되는 것을 확인할 수 있다.
+
+
+```bash
+source venv/bin/activate
+```
+
+
+이제 아래의 의존성을 다운받는다.
+
+
+```text
+oauth2client==4.1.3
+httplib2==0.22.0
+requests==2.24.0
+```
+
+
 **[소스 코드]**
 
 
-프로젝트는 [GitHub](https://github.com/han-0315/AutoIndexing)를 통해서 확인할 수 있습니다.
+프로젝트는 [GitHub](https://github.com/han-0315/AutoIndexing)를 통해서 확인할 수 있습니다. 
 
 
 ```python
