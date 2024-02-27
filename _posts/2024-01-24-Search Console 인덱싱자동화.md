@@ -2,7 +2,7 @@
 layout: post
 title: Google Search Console 인덱싱 자동화, 인덱싱 오류가 발생할 때
 date: 2024-01-24 09:10 +0900 
-description: Decorator Pattern
+description: Google Search Console 인덱싱 자동화, 인덱싱 오류가 발생할 때 해결법
 category: [블로그, 인덱싱] 
 tags: [색인, 페이지, 인덱싱, 자동화] 
 pin: false
