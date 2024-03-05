@@ -5,6 +5,9 @@ date: 2023-12-01 11:00 +0900
 description: Terraform Basic 정리
 category: [IaC, Terraform]
 tags: [IaC, Terraform, Basic] 
+image:
+  path: /assets/img/logo/Terraform/logo.png
+  alt: Terraform Logo
 pin: false
 math: true
 mermaid: true

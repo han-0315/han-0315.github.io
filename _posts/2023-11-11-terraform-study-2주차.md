@@ -5,6 +5,9 @@ date: 2023-11-11 15:17 +0900
 description: 'Terraform Study 2주차'
 category: [Study, Terraform]
 tags: [Terraform, IaC, Study]
+image:
+  path: /assets/img/logo/Terraform/logo.png
+  alt: Terraform Logo
 pin: false
 math: true
 mermaid: true
