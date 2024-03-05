@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Google Search Console 인덱싱 자동화, 인덱싱 오류가 발생할 때
+title: Google Search Console 인덱싱 자동화2
 date: 2024-03-05 09:10 +0900 
 description: Google Search Console 인덱싱 자동화, 서버리스로 업그레이드
 category: [블로그, 인덱싱] 
