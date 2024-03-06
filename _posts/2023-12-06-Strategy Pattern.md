@@ -91,9 +91,8 @@ ex) 연산이라는 알고리즘에는 더하기, 빼기, 곱하기, …. 제곱
 
 
 ![https://refactoring.guru/ko/design-patterns](/assets/img/post/Strategy%20Pattern/1.png)
+[출처: https://refactoring.guru/ko/design-patterns]
 
-
-![Untitled.png](/assets/img/post/Strategy%20Pattern/2.png)
 
 
 flying behavior, quacking behavior가 전략패턴, Duck이 전략패턴으로 만들어진 클래스를 이용한다.

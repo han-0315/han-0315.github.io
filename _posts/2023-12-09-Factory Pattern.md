@@ -139,7 +139,6 @@ public class SimpleFactory{
 이렇게하면, 똑같은 시스템(`orderPizza` 등)를 이용하면서 동적으로 알맞은 피자를 생성할 수 있다, 추후 다른 피자가 추가된다면 해당 피자클래스를 생성하고 Factory에 추가하면된다.
 
 
-![설계 패턴 수업 자료](/assets/img/post/Factory%20Pattern/4.png)
 
 
 ### 의존성 역전
@@ -170,7 +169,7 @@ Pizza orderPizza(string type){
 팩토리 메서드 패턴을 적용하면, 각 피자 클래스가 아닌 Pizza라는 abstract class에 의존하게 된다. 
 
 
-![설계패턴 강의 중 자료](/assets/img/post/Factory%20Pattern/5.png)
+![](/assets/img/post/Factory%20Pattern/5.png)
 
 
 의존성 역전 원칙 지키는 법
@@ -269,8 +268,6 @@ public class NYPizzaIngredientFactory implements PizzaIngredientFactory {
 		}
 	```
 
-
-<!-- ![헤드퍼스트 책 추상팩토리 다이어그램](/assets/img/post/Factory%20Pattern/6.png) -->
 
 
 ### 단점

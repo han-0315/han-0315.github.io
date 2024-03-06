@@ -35,6 +35,7 @@ Template Method Pattern 정리
 
 
 ![https://refactoring.guru/ko/design-patterns/template-method](/assets/img/post/Template%20Method(골격정의)/1.png)
+[출처: https://refactoring.guru/ko/design-patterns]
 
 1. **구상 클래스들**은 모든 단계들을 **오버라이드**할 수 있지만, 골격(단계)를 나타내는 `templateMethod()` 함수는 **오버라이드 할 수 없다.** Java에서는 **수정이 불가능하게 final** 키워드를 추가한다.
 2. 각 단계들은 외부는 막고, 자식들만 활용할 수 있도록 protected로 선언한다

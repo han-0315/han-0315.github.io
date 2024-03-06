@@ -50,7 +50,7 @@ State 파일에는 리소스에 대한 모든 것이 담겨있다. 아래의 실
 
 - 패스워드 리소스 코드
 
-```go
+```bash
 resource "random_password" "mypw" {
   length           = 16
   special          = true

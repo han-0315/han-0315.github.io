@@ -436,10 +436,10 @@ Terraform 이 어떤 공급자와 사용할 지 표현하기 위해, `provider.t
 
 프로바이더는 `terraform init` 명령어를 통해, 필요한 플러그인을 검색 및 다운로드하며 lock.hcl 파일에 프로바이더를 명시하여 앞으로의 코드 수행에서 사용되는 플러그인을 제한한다. (예상하지 못한, 동작을 방지하는 역할을 한다.) `terraform init` 명령어는 백엔드 설정 혹은 프로젝트 시작시 수행하기에 여러 작업이 일어난다. 프로바이더만 업그레이드하고 싶으면, `terraform init -upgrade` 를 수행한다. 
 
-아래의 그림으로 한번에 이해할 수 있다.
+스터디를 미리 진행해주신 악분님이 한눈에 이해할 수 있는 그림을 그려주셨다.
 
 ![](https://velog.velcdn.com/images/han-0315/post/1bfc8411-bfc9-490a-91e5-91305e17397b/image.png)
-출처:[https://malwareanalysis.tistory.com/619](https://malwareanalysis.tistory.com/619)
+출처:[악분님 티스토리](https://malwareanalysis.tistory.com/619)
 
 아래와 같이, 파트너사 혹은 플러그인을 제공하는 업체라면 테라폼을 통해 리소스를 정의할 수 있다.
 Terraform과 파트너 목록은 아래의 이미지 참고
@@ -447,8 +447,7 @@ Terraform과 파트너 목록은 아래의 이미지 참고
 
 
 - kubernetes 환경 인프라 구축하기
-    - provider.tf
-        
+    - `provider`
         ```bash
         terraform {
           required_providers {
@@ -463,7 +462,7 @@ Terraform과 파트너 목록은 아래의 이미지 참고
         }
         ```
         
-    - kubernetes.tf
+    - `kubernetes.tf`
         
         ```bash
         resource "kubernetes_deployment" "nginx" {
