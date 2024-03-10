@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Google Search Console 인덱싱 자동화2
+title: Google Search Console 인덱싱 자동화3
 date: 2024-03-10 09:00 +0900 
 description: Google Search Console 인덱싱 자동화, SQS 도입
 category: [블로그, 인덱싱] 
