@@ -15,7 +15,7 @@ mermaid: true
 ‘테라폼으로 시작하는 IaC’ 책으로 진행하는 Terraform 스터디[T101] 3주차 정리내용입니다.
 <!--more-->
 # 3주차
-이번시간은 테라폼 기본사용 마지막 단계(3/3)이다. 이번주차에서는 조건문, 함수, 프로비저너, data block에 대해 배운 뒤 프로바이더를 경험해보고 마무리된다. 개인적으로 null_resource에 대해 잘몰랐다. 많이 사용한 플러그인 중 하나라고 한다..! 이번 기회에 잘 배워두면 좋을 것 같다. (지금은 terraform_data가 같은 기능을 수행한다.)
+이번시간은 테라폼 기본사용 마지막 단계(3/3)이다. 이번주차에서는 조건문, 함수, 프로비저너, data block에 대해 배운 뒤 프로바이더를 경험해보고 마무리된다. 개인적으로 null_resource에 대해 잘몰랐다. 많이 사용한 플러그인 중 하나라고 한다. 이번 기회에 잘 배워두면 좋을 것 같다. (지금은 terraform_data가 같은 기능을 수행한다.)
 
 ## Conditional(조건문)
 
@@ -48,7 +48,7 @@ output "content" {
 - `false`를 지정한 경우
 
 ```bash
-$ export TF_VAR_enable_file**=false**
+$ export TF_VAR_enable_file=false
 $ export | grep TF_VAR_enable_file
 TF_VAR_enable_file=false
 $ terraform init && terraform plan && terraform apply -auto-approve
@@ -103,7 +103,7 @@ $ echo "local_file.foo[0].content" | terraform console
 
 ## 함수
 
-함수는 내장함수만 사용가능하다. 사용자 정의함수와 같이 직접 만들 수 없다. [**공식문서](https://developer.hashicorp.com/terraform/language/functions)** 에서 확인하면서 확인한 함수를 간단하게 정리해봤다.
+함수는 내장함수만 사용가능하다. 사용자 정의함수와 같이 직접 만들 수 없다. [공식문서](https://developer.hashicorp.com/terraform/language/functions)에서 확인하면서 확인한 함수를 간단하게 정리해봤다.
 
 - `toset` : 해당 함수는 집합과 같이 중복된 원소를 제거하고, 정렬시킨다.
     - `toset(["b", "a","b"]) =[”a”, “b”]`
@@ -126,19 +126,18 @@ $ echo "local_file.foo[0].content" | terraform console
     - contains(var.ami, “AMI-ABC”) = true (요소가 있는 지 없는 지)
 - MAP 관련 함수 → map 함수는 지원하지 않고, `tomap` 함수를 지원
     
-    ```go
-    variable "ami" {
-      type = map
-      default = { 
-    		"us-east-1" = "ami-xyz",
-        "ca-central-1" = "ami-efg",
-        "ap-south-1" = "ami-ABC"
-    	}
-    	description = "A map of AMI ID's for specific regions" 
-    }
-    ```
-    
-    - lookup (var.ami, "us-east-1") : ami-xyz
+```go
+variable "ami" {
+  type = map
+  default = { 
+    "us-east-1" = "ami-xyz",
+    "ca-central-1" = "ami-efg",
+    "ap-south-1" = "ami-ABC"
+  }
+  description = "A map of AMI ID's for specific regions" 
+}
+```
+`lookup (var.ami, "us-east-1")` 명령어를 실행하면 `ami-xyz`를 반환한다.
 
 ## 프로비저너
 
@@ -149,7 +148,9 @@ $ echo "local_file.foo[0].content" | terraform console
 
 그렇기에, 프로비저너보단 userdata 등을 사용하는 것이 좋다.
 
-프로비저너는 생성할 때만 실행되고 추후 작업은 없다. 그래서 `provisioner`가 실패하면 리소스가 잘못되었다고 판단하고 다음 `terraform apply` 할 때 제거하거나 다시 생성한다. `provisioner`에서 `when = "destroy"`를 지정하면 해당 프로비저너는 리소스를 제거하기 전에 실행되고 프로비저너가 실패한다면 다음 `terraform apply` 할 때 다시 실행하게 된다. 문서에 따르면 이 때문에 제거 프로비저너는 여러 번 실행해도 괜찮도록 작성해야 한다고 한다. 
+프로비저너는 생성할 때만 실행되고 추후 작업은 없다. 그래서 `provisioner`가 실패하면 리소스가 잘못되었다고 판단하고 다음 `terraform apply` 할 때 제거하거나 다시 생성한다. 
+
+`provisioner`에서 `when = "destroy"`를 지정하면 해당 프로비저너는 리소스를 제거하기 전에 실행되고 프로비저너가 실패한다면 다음 `terraform apply` 할 때 다시 실행하게 된다. 문서에 따르면 이 때문에 제거 프로비저너는 여러 번 실행해도 괜찮도록 작성해야 한다고 한다. 
 
 ---
 **참고 자료**
@@ -439,7 +440,9 @@ Terraform 이 어떤 공급자와 사용할 지 표현하기 위해, `provider.t
 스터디를 미리 진행해주신 악분님이 한눈에 이해할 수 있는 그림을 그려주셨다.
 
 ![](https://velog.velcdn.com/images/han-0315/post/1bfc8411-bfc9-490a-91e5-91305e17397b/image.png)
-출처:[악분님 티스토리](https://malwareanalysis.tistory.com/619)
+<p align="center">
+	출처:[악분님 티스토리](https://malwareanalysis.tistory.com/619)
+</p>
 
 아래와 같이, 파트너사 혹은 플러그인을 제공하는 업체라면 테라폼을 통해 리소스를 정의할 수 있다.
 Terraform과 파트너 목록은 아래의 이미지 참고

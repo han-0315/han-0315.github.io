@@ -21,7 +21,7 @@ mermaid: true
 
 기본 사용법은 2기 스터디원 Ssoon님이 [블로그](https://kschoi728.tistory.com/124)에 잘 정리해주셨다. 
 
-아래와 같이 AMI나 AZ를 조회할 때 유용하다.
+아래와 같이 AMI나 AZ와 같이 기존에 있는 정보를 이용해야 할 때 유용하다.
 
 - ubuntu AMI 조회
 
@@ -88,15 +88,15 @@ data "aws_availability_zones" "available" {
 
 - 선언 예시
     
-    ```go
-    variable "<이름>" {
-     <인수> = <값>
-    }
-    
-    variable "image_id" {
-     type = string
-    }
-    ```
+```go
+variable "<이름>" {
+  <인수> = <값>
+}
+
+variable "image_id" {
+  type = string
+}
+```
     
 
 위와 같이 변수를 정의할 때 다양한 메타인수를 넣을 수 있다. 관련 정보는 아래와 같다.
@@ -114,7 +114,7 @@ data "aws_availability_zones" "available" {
 
 - 우선순위
 
-1번 부터 변수를 대입하며, 후 순위가 전 순위를 덮어쓰기 합니다. 결론적으로 아래에 있는 옵션이 우선순위가 높습니다. 
+1번 부터 변수를 대입하며, 후 순위가 전 순위를 덮어쓰기 합니다. 결론적으로 가장 아래에 있는 옵션이 우선순위가 가장 높습니다. 
 
 | Order | Option                                 |
 | ----- | -------------------------------------- |
@@ -154,8 +154,6 @@ resource "aws_instance" "app" {
 
 ## 실습
 
-`도전과제2` : 위 3개 코드 파일 내용에 **리소스**의 이름(**myvpc**, **mysubnet1** 등)을 반드시! 꼭! 자신의 **닉네임**으로 변경해서 배포 실습해보세요!
-
 - VPC DNS 옵션 활성화
 
 ```go
@@ -173,8 +171,9 @@ resource "aws_vpc" "myvpc" {
 ![](https://velog.velcdn.com/images/han-0315/post/9687844c-e387-4839-81ad-bc66cbf4fb1c/image.png)
 
 
-- `[도전과제1]` 리전 내에서 사용 가능한 **가용영역 목록 가져오기**를 사용한 VPC 리소스 생성 실습 진행
-- 아래와 같이, data 소스를 이용하여 AZ를 가져온다.
+[`[도전과제1]` 리전 내에서 사용 가능한 **가용영역 목록 가져오기**를 사용한 VPC 리소스 생성 실습 진행]
+
+아래와 같이, data 소스를 이용하여 AZ를 가져온다.
 
 ```go
 resource "aws_subnet" "mysubnet1" {
@@ -203,21 +202,19 @@ resource "aws_subnet" "mysubnet2" {
 
 
 
-- ec2 생성 콘솔에서 확인
+**[ec2 생성 콘솔에서 확인]**
 
 ![](https://velog.velcdn.com/images/han-0315/post/7875e838-0973-4bcf-a3c4-fef6620a761b/image.png)
 
 
-
-- Graph
-
-Vscode 에서 추출한 그림인데, 리소스가 많아 보기 조금 불편하다.
+Vscode 에서 추출한 Graph인데, 리소스가 많아 보기 불편하다.
 
 ![](https://velog.velcdn.com/images/han-0315/post/f1fdc61e-ee24-4db2-adfb-a0e47e06dcc3/image.png)
 
 
 
-- EC2 접속하기
+**[배포 확인]**
+이제 배포된 EC2에 접속하여, 테라폼 코드가 정상적으로 수행되었는 지 확인한다.
 
 ```bash
 $ MYIP=$(terraform output -raw kane_ec2_public_ip)
@@ -237,7 +234,7 @@ Mon Sep  4 00:50:58 KST 2023
 
 ## Output
 
-terraform apply 이후 파일에 적힌 출력값을 콘솔에 출력해준다. 주로 Ec2의 퍼블릭 ip같이 꼭 확인해야 하는 것들을 주로 출력한다. 생성 후의 정보를 출력하기에 당연한 이야기지만 **오로지, apply를 적용할 때만 출력한다. 또한 이런 값들은 추후 파이프라인 구성, shell script 혹은 `ansible` 에 사용할 수도 있다.**
+terraform apply 이후 파일에 적힌 출력값을 콘솔에 출력해준다. 주로 Ec2의 퍼블릭 ip같이 꼭 확인해야 하는 것들을 주로 출력한다. 생성 후의 정보를 출력하며 값들은 추후 파이프라인 구성, shell script 혹은 `ansible` 에 사용할 수도 있다.**
 
 **기본 예시**
 
@@ -281,60 +278,66 @@ output "instance_ip_addr" {
 
 ## 반복문
 
-- **count :** 반복문, 정수 값만큼 리소스나 모듈을 생성함. 인스턴스가 거의 동일한 경우 Count가 적절(For each 보다), `count, count.index` 로 접근
+Terraform에서 반복문의 아래의 3가지 문법이 있다. 
+
+**[count]** 
+원하는 정수 값만큼 리소스나 모듈을 생성한다. 주로 리소스의 속성값이 동일한 경우 Count가 적절하다. 
+
+`count, count.index` 로 접근할 수 있다.
+
+```go
+variable "subnet_ids" {
+  type = list(string)
+}
+
+resource "aws_instance" "server" {
+  # Create one instance for each subnet
+  count = length(var.subnet_ids)
+  ...
+  subnet_id     = var.subnet_ids[count.index]
+
+  tags = {
+    Name = "Server ${count.index}"
+  }
+}
+```
     
-    ```go
-    variable "subnet_ids" {
-      type = list(string)
-    }
+**[for_each]**
+MAP 형식의 자료구조로 {key, value}형태로 데이터를 저장한다. 선언된 key 값 개수만큼 리소스를 생성한다. 
+
+```go
+resource "aws_instance" "example" {
+  # One VPC for each element of var.vpcs
+  for_each = var.instances
+
+  # each.value here is a value from var.vpcs
+  name = each.key
+  ami = each.value.ami
+}
+```
     
-    resource "aws_instance" "server" {
-      # Create one instance for each subnet
-      count = length(var.subnet_ids)
-    	...
-      subnet_id     = var.subnet_ids[count.index]
+**[for]**
     
-      tags = {
-        Name = "Server ${count.index}"
-      }
-    }
-    ```
+만약 [ ]으로 되어있으면 tuple 형식으로 컨테이너를 반환하고, {}이면 오브젝트로 반환하는 반복문이다.
     
-- **for_each :** 반복문, 선언된 key 값 개수만큼 리소스를 생성
-    
-    ```go
-    resource "aws_instance" "example" {
-      # One VPC for each element of var.vpcs
-      for_each = var.instances
-    
-      # each.value here is a value from var.vpcs
-      name = each.key
-    	ami = each.value.ami
-    }
-    ```
-    
-- **for**
-    
-    만약 [ ]으로 되어있으면 tuple 형식으로 컨테이너를 반환하고, {}이면 오브젝트로 반환하는 반복문이다.
-    
-    또한 `for` 뒤에 `If` 를 통해 필터링 기능도 가능하다.(if 인 값만 사용)
-    
-    ```go
-    [for s in var.list : upper(s) if s != ""]
-    [for i, v in var.list : "${i} is ${v}"]
-    # object 형식일때
-    [for k, v in var.map : length(k) + length(v)]
-    ```
+또한 `for` 뒤에 `If` 를 통해 필터링 기능도 가능하다.(if 인 값만 사용)
+
+```go
+[for s in var.list : upper(s) if s != ""]
+[for i, v in var.list : "${i} is ${v}"]
+# object 형식일때
+[for k, v in var.map : length(k) + length(v)]
+```
     
 
-- **Dynamic Block**
+**[Dynamic Block]**
 
 특수한 목적의 Dynamic Block을 통해 동적으로 만들어지는 변수에 대해 반복 가능한 블럭을 만들 수 있다. 기존의 for_each, count 등 반복문은 리소스 block 등 자신의 바깥 블럭을 반복해서 찍어내는 것에 비해 dynamic block은 block자체를 정의하며 반복적으로 찍어낸다. (resource와 같은 단일블락이 아닌 내부 블락으로만 사용된다.) 사용방법은 Argument를 확인하면 된다.
 
-- 찾아보니, 다음과 같은 안내사항도 있었다.
-    - 과도한 사용을 피한다. (동적 블록을 과도하게 사용하면 구성을 읽고 유지하기 어려울 수 있다.)
-    - 재사용 가능한 모듈을 위한 깨끗한 사용자 인터페이스를 구축하기 위해 세부 정보를 숨겨야 할 때 사용합니다
-    - 가능한 경우 항상 중첩된 블록을 문자 그대로 써라.
+찾아보니, 다음과 같은 안내사항도 있었다.
+- 과도한 사용을 피한다. (동적 블록을 과도하게 사용하면 구성을 읽고 유지하기 어려울 수 있다.)
+- 재사용 가능한 모듈을 위한 깨끗한 사용자 인터페이스를 구축하기 위해 세부 정보를 숨겨야 할 때 사용합니다
+- 가능한 경우 항상 중첩된 블록을 문자 그대로 써라.
 
 ```go
 resource "aws_security_group" "backend-sg" {

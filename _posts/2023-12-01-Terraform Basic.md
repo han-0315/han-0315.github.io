@@ -85,8 +85,9 @@ Day 1 ~ Day N : 구성 관리를 진행한다. **(Chef, Ansible, Docker 와 같�
 테라폼은 논리적으로 크게 Terraform core, Terraform Plugins 으로 나뉜다. Terraform Core는 원격 프로시저 호출(RPC)을 사용하여 플러그인과 통신하며, 플러그인(프로바이더)는 관련 라이브러리를 통해 클라우드 API를 호출한다. 
 
 ![](/assets/img/post/Terraform%20Basic/1.jpg)
+<p align="center">
 [출처: https://developer.hashicorp.com/terraform/plugin]
-
+</p>
 
 ### Terraform Core(CLI)
 

@@ -317,8 +317,9 @@ AWS 콘솔에서 확인해보면 VPC,Subnet 모두 정상적으로 네트워크 
 리소스가 적다면 모놀리식 방식으로 구성해도 좋지만 유지보수, 운영을 생각하면 프로비저닝 단위별로 분류하는 것이 좋다. 정보는 공유할 수 있지만 각 집합은 독립적으로 실행되며 다른 집합에 영향을 받지 않는 격리된 구조가 필요하다.
 
 ![](https://velog.velcdn.com/images/han-0315/post/356c4266-9961-4fd2-b9b8-d5a5cb75290d/image.png)
-
-출처: [https://medium.com/@dudwls96/terraform-통한-iac-infrastructure-as-code-365일간-운영-후기-500737e6c1e6](https://medium.com/@dudwls96/terraform-%ED%86%B5%ED%95%9C-iac-infrastructure-as-code-365%EC%9D%BC%EA%B0%84-%EC%9A%B4%EC%98%81-%ED%9B%84%EA%B8%B0-500737e6c1e6)
+<p align="center">
+출처: https://medium.com/@dudwls96/terraform-%ED%86%B5%ED%95%9C-iac-infrastructure-as-code-365%EC%9D%BC%EA%B0%84-%EC%9A%B4%EC%98%81-%ED%9B%84%EA%B8%B0-500737e6c1e6
+</p>
 
 ## CI/CD
 

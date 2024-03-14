@@ -89,10 +89,10 @@ ex) 연산이라는 알고리즘에는 더하기, 빼기, 곱하기, …. 제곱
 
 ~를 상속하다. Aggressive : 여기에 내것이 있다.
 
-
 ![https://refactoring.guru/ko/design-patterns](/assets/img/post/Strategy%20Pattern/1.png)
+<p align="center">
 [출처: https://refactoring.guru/ko/design-patterns]
-
+</p>
 
 
 flying behavior, quacking behavior가 전략패턴, Duck이 전략패턴으로 만들어진 클래스를 이용한다.
