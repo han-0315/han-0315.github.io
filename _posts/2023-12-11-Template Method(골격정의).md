@@ -239,7 +239,7 @@ Donald weighs 10
 전략 패턴은 모든 알고리즘이 다 명시되어있는 반면, 템플릿 메서드 패턴은 단계가 명시되어있고 일부 단계는 하위 클래스에서 오버라이딩할 수 있다.
 
 
-### ****abstract와 Interface의 차이는?**
+### abstract와 Interface의 차이는?
 
 - abstract : 부모의 기능을 자식에서 확장시켜나가고 싶을 때 → 상속(단 한개의 클래스만 상속가능)
 - interface : 해당 클래스가 가진 함수의 기능을 활용하고 싶을 때 → 구현(여러 인터페이스도 구현가능)
@@ -247,5 +247,4 @@ Donald weighs 10
 > Java에서는 다중 상속이 안된다. 상황에 맞게 활용하자!
 
 
-[**팩토리 메서드**](https://refactoring.guru/ko/design-patterns/factory-method)는 [**템플릿 메서드**](https://refactoring.guru/ko/design-patterns/template-method)의 특수화라고 생각할 수 있다.
 
