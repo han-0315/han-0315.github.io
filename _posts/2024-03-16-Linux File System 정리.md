@@ -1,8 +1,8 @@
 ---
 layout: post
-title: virtual filesystem
+title: Linux Virtual File System 정리
 date: 2024-03-16 09:00 +0900 
-description: VFS 정리
+description: Linux VFS 정리
 category: [Linux, File system] 
 tags: [System, SE, Linux, Network]
 pin: false
