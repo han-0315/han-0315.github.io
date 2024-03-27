@@ -448,10 +448,12 @@ kubectl taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedul
 	- Planned(선호도) : 스케줄링이후에도 규정을 지키려고 노력함
 		- **required**DuringScheduling<u>**RequiredDuringExecution**</u>
 		- **preferred**DuringScheduling<u>**RequiredDuringExecution**</u>
-- 연산자(operator)
-	- `In` : 조건에 맞는 노드에 배치
-	- `NotIn` : 조건과 다른 노드에 배치
-	- `Exists` : 조건이 있는 노드에 배치
+
+#### 연산자(operator)
+
+- `In` : 조건에 맞는 노드에 배치
+- `NotIn` : 조건과 다른 노드에 배치
+- `Exists` : 조건이 있는 노드에 배치
 
 ```yaml
 apiVersion: v1
@@ -492,13 +494,16 @@ spec:
 ### 파드의 고가용성
 
 
+파드를 최대한 퍼트려, 고가용성을 유지할 수 있다.
+
+
 #### podAffinity
 
 
-**podAffinity**을 사용하여 최대한 다른 노드에 파드를 배포할 수 있다. 아래의 코드를 확인하면, `labelSelector`를 이용하여 security=S1인 파드가 존재하는 곳 중에서 security=S2가 없는 노드에 최대한 배치하려는 것이다.
-
-
 **`podAffinity`**을 통해 특정 파드와 같은 노드에 위치시킬 수 있고, **`podAntiAffinity`**을 통해 특정 파드와 다른 곳에 위치시킬 수 있다.
+
+
+**podAffinity**을 사용하여 최대한 다른 노드에 파드를 배포할 수 있다. 아래의 코드를 확인하면, `labelSelector`를 이용하여 security=S1인 파드가 존재하는 곳 중에서 security=S2가 없는 노드에 최대한 배치하려는 것이다.
 
 
 ```yaml
