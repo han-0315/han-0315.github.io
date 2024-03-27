@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Kubernetes Application 관련 정리
-date: 2024-03-27 09:00 +0900 
+date: 2024-03-27 15:00 +0900 
 description: CKAD 공부할 겸, 애플리케이션 관련 내용을 정리한다.
 category: [Kubernetes, Application] 
 tags: [CKAD, Kubernetes, Application, Pod, Sidecar] 
@@ -366,16 +366,257 @@ spec:
 ```
 
 
-| 항목                   | 설명                     | 상응 표현 |
-| ---------------------- | ------------------------ | --------- |
+| 항목                     | 설명              | 상응 표현     |
+| ---------------------- | --------------- | --------- |
 | @yearly (or @annually) | 매년 1월 1일 자정에 실행 | 0 0 1 1 * |
-| @monthly               | 매월 1일 자정에 실행     | 0 0 1 * * |
-| @weekly                | 매주 일요일 자정에 실행  | 0 0 * * 0 |
-| @daily (or @midnight)  | 매일 자정에 실행         | 0 0 * * * |
-| @hourly                | 매시 0분에 시작          | 0 * * * * |
+| @monthly               | 매월 1일 자정에 실행    | 0 0 1 * * |
+| @weekly                | 매주 일요일 자정에 실행   | 0 0 * * 0 |
+| @daily (or @midnight)  | 매일 자정에 실행       | 0 0 * * * |
+| @hourly                | 매시 0분에 시작       | 0 * * * * |
 
 
 *로 표시된 주기 만큼 반복하는 것이다. 그래서 만약 아무 표시도 없는 * * * * *의 경우 1분마다 작업을 수행한다. 내가 *을 월에 두었으면, “ex) 매달 5일 자정에 실행한다” 같이 매달 작업이 반복된다.
+
+
+## 스케줄링
+
+
+### Taints(Node) & Tolerations(Pod)
+
+
+여기서는 파드를 노드에 스케줄링할 때, 여러 조건을 거는 것이다. 내가 들었던 강의에서는 농약과 벌레 비유가 나오는데, 벌레는 스케줄링하는 파드를 의미하고, 농약은 노드를 의미한다. Taints는 농약으로, 노드에 뿌려 파드가 해당 노드에 스케줄링되지 않도록한다. 하지만 항체가 있는 파드는 농약이 있어도 접근할 수 있다. 항체 Tolerations를 파드에 뿌리면 농약이 있는 노드에도 스케줄링될 수 있다. 또한 마스터노드는 기본적으로 No scheduler Taint가 형성되어있다.
+
+
+> Taint(오점) : 해당 노드에 Taint가 있기에, Taint를 상쇄하는 Toleration이 없으면 해당 노드에 배치될 수 없음
+
+
+### Taint 적용
+
+
+**명령어** 
+
+
+ `kubectl taint nodes <node-name> key=value:taint-effect`
+
+- ex) `kubectl taint nodes <node-name> key1=value2:NoSchedule`
+- effect는 아래의 3가지 가능
+	- **`NoSchedule`**
+	- **`PreferNoSchedule`**
+	- **`NoExecute`**
+
+### Tolerations 적용 
+
+
+node01과 같은 경우, 아래와 유사하게 tolerations가 존재해야, 가능하다. `Effect = value` 
+
+
+```yaml
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: bee
+spec:
+  containers:
+  - image: nginx
+    name: bee
+  tolerations:
+  - key: spray
+    value: mortein
+    effect: NoSchedule
+    operator: Equal
+```
+
+
+### Taint 제거
+
+
+```bash
+kubectl taint nodes controlplane node-role.kubernetes.io/control-plane:NoSchedule-
+```
+
+
+### Selector & **Affinity**
+
+1. `nodeselector`: 라벨(key - value)을 통해 스케줄링을 지정할 수 있다.  (선호도기능은 하지 못함)
+2. `nodeaffinity` : 특정 노드에 스케줄링되도록 유도(특정 노드 배치 제안)
+	- `requiredDuringSchedulingIgnoredDuringExecution` : 해당 규칙이 만족되야, 파드를 스케줄링 → **규칙이 만족되지 않으면 스케줄링할 수 없다.**
+	- `preferredDuringSchedulingIgnoredDuringExecution` : 해당 조건을 만족하는 노드를 찾으려고 노력 → 없으면 일반 스케줄링
+	- Available(조건 만족) : 스케줄링을 할 때만 규정을 지킴
+		- **required**DuringScheduling<u>**IgnoredDuringExecution**</u> <u>:</u> 해당 조건이 아니면, 스케줄링 불가
+		- **preferred**DuringScheduling<u>**IgnoredDuringExecution**</u>  : 조건을 선호하는 것, 없어도 가능
+	- Planned(선호도) : 스케줄링이후에도 규정을 지키려고 노력함
+		- **required**DuringScheduling<u>**RequiredDuringExecution**</u>
+		- **preferred**DuringScheduling<u>**RequiredDuringExecution**</u>
+- 연산자(operator)
+	- `In` : 조건에 맞는 노드에 배치
+	- `NotIn` : 조건과 다른 노드에 배치
+	- `Exists` : 조건이 있는 노드에 배치
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-affinity-anti-affinity
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/os
+            operator: In # 해당 옵션이 가능한 곳에 배치 <-> NotIn
+            values:
+            - linux
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: label-1
+            operator: In 
+            values:
+            - key-1
+      - weight: 50
+        preference:
+          matchExpressions:
+          - key: label-2
+            operator: In
+            values:
+            - key-2
+  containers:
+  - name: with-node-affinity
+    image: registry.k8s.io/pause:2.0
+```
+
+
+### 파드의 고가용성
+
+
+#### podAffinity
+
+
+**podAffinity**을 사용하여 최대한 다른 노드에 파드를 배포할 수 있다. 아래의 코드를 확인하면, `labelSelector`를 이용하여 security=S1인 파드가 존재하는 곳 중에서 security=S2가 없는 노드에 최대한 배치하려는 것이다.
+
+
+**`podAffinity`**을 통해 특정 파드와 같은 노드에 위치시킬 수 있고, **`podAntiAffinity`**을 통해 특정 파드와 다른 곳에 위치시킬 수 있다.
+
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: with-pod-affinity
+spec:
+  affinity:
+    podAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: security
+            operator: In
+            values:
+            - S1
+        topologyKey: topology.kubernetes.io/zone
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: security
+              operator: In
+              values:
+              - S2
+          topologyKey: topology.kubernetes.io/zone
+  containers:
+  - name: with-pod-affinity
+    image: registry.k8s.io/pause:2.0
+```
+
+
+#### Pod Topology Spread Constraints
+
+
+위 기능은 고가용성을 위해 파드를 여러 노드에 분산시키기 위해 만들어졌다. 
+
+
+maxSkew: 하나의 노드에 유사한 파드가 동작할 수 있는 최대 개수
+
+
+```yaml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:
+    foo: bar
+spec:
+  topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        foo: bar
+  containers:
+  - name: pause
+    image: registry.k8s.io/pause:3.1
+```
+
+
+## Services Account
+
+
+### Service Account란?
+
+
+유저를 의미하는 것이 아닌 서비스 계정 즉, 프로메테우스와 같은 다른 프로그램을 위한 계정을 말한다. 서비스 어카운트 자격 증명을 사용하여 API 서버에 인증하거나 Identity 기반 보안 정책을 구현할 수 있다. 
+
+
+ex) 파드에서 kubenetes API를 호출할 때는 인증서가 필요하기에 서비스 계정이 필요하다. 서비스 계정과 토큰을 연결한 뒤, 파드에 서비스 계정을 붙이면 이제 파드는 Kubernetes API를 이용할 수 있다.
+
+
+
+> <u>1.22 버전으로 업데이트가 되면서 유효기간이 없는 서비스계정은 문제가 된다 생각해, 자동으로 기본 서비스 계정을 할당하는 것이 아닌 api 요청으로 생성하게 만들었다.  
+> 1.24 버전으로 업데이트 되며, 서비스 계정을 생성하면 토큰이 자동으로 생성되는 방식에서 수동으로 생성해야 하는 방식으로 변경됨.</u>
+
+
+서비스 어카운트는 하나의 네임스페이스에 생성된다. 모든 네임스페이스는 생성시 기본 서비스 어카운트가 같이 생성된다. 
+
+
+### 생성
+
+- `kubectl create clusterrole <NAME> —verb=<VERB> —resource=<RESOURCE>`
+- `kubectl create serviceaacount <NAME> —namespace=<NAMESPACE>`
+- `kubectl create token build-robot` : build-robot 서비스 어카운트에 대한 토큰 생성
+- `kubectl create rolebinding <NAME> —culsterrole=<NAME> —serviceaccount=<NAMESAPCE>:<NAME>`
+
+아래와 같이 파드에 서비스 어카운트를 붙일 수 있다. 아래는 Valut라는 외부시스템과 연동하는 파드 명세이다.
+
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    name: nginx
+    volumeMounts:
+    - mountPath: /var/run/secrets/tokens
+      name: vault-token
+  serviceAccountName: build-robot
+  volumes:
+  - name: vault-token
+    projected:
+      sources:
+      - serviceAccountToken: #volume 내에 저장할 경로
+          path: vault-token
+          expirationSeconds: 7200 # 유효기간 (2시간)
+          audience: vault # 어떤 서비스에 대해 발행된 토큰인지 명시
+
+```
 
 
 ## 참고자료
@@ -391,4 +632,7 @@ spec:
 
 
 [https://medium.com/finda-tech/kubernetes-pod의-진단을-담당하는-서비스-probe-7872cec9e568](https://medium.com/finda-tech/kubernetes-pod%EC%9D%98-%EC%A7%84%EB%8B%A8%EC%9D%84-%EB%8B%B4%EB%8B%B9%ED%95%98%EB%8A%94-%EC%84%9C%EB%B9%84%EC%8A%A4-probe-7872cec9e568)
+
+
+[https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/](https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/)
 
