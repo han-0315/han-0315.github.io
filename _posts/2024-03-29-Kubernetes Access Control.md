@@ -24,12 +24,12 @@ mermaid: true
 ### 인증과정
 
 
-> 💡 **순서  
+> 💡 **순서**  
 > 1. Client API 요청(ex. Kubectl)  
 > 2. 인증(Authentication)  
 > 3. 인가(Authorization)  
 > 4. Admission Controllers  
-> 5. 명령실행(ex Create Pod)**
+> 5. 명령실행(ex Create Pod)
 
 
 #### 인증
