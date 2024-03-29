@@ -273,5 +273,10 @@
     "id": "e312fe17d2cd4477b63a0de4a89022f2",
     "update_date": "2024-03-27",
     "post_title": "2024-03-27-Kubernetes Application 관련 정리"
+  },
+  {
+    "id": "74b78b93e98642edaaa26c3e3d70bd00",
+    "update_date": "2024-03-29",
+    "post_title": "2024-03-29-Kubernetes Access Control"
   }
 ]
