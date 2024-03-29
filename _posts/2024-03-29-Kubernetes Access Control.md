@@ -24,12 +24,12 @@ mermaid: true
 ### 인증과정
 
 
-> 💡 **순서**
+> 💡 **순서  
 > 1. Client API 요청(ex. Kubectl)  
 > 2. 인증(Authentication)  
 > 3. 인가(Authorization)  
 > 4. Admission Controllers  
-> 5. 명령실행(ex Create Pod)
+> 5. 명령실행(ex Create Pod)**
 
 
 #### 인증
@@ -70,6 +70,14 @@ Admission Controllers는 세부조건을 확인하는 ‘validating’과 ‘mut
 - validating & mutating
 	- AlwaysPullImages
 
+Admission Controllers에 넣은 세부사항 확인하기(eks와 같이 관리형 쿠버네티스에서는 아래의 명령어가 불가능하다.)
+
+
+```bash
+kubectl exec -it kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep 'enable-admission-plugins’
+```
+
+
 #### 명령 수행
 
 
@@ -105,7 +113,7 @@ $ kubectl get pods --as dev-user
 ### 권한만드는 법
 
 
-[RBAC](https://www.notion.so/7530019ba1594a0da4b7786645a1de3e) 방식으로 권한을 만드는 예시이다. 네임스페이스 범위안에 있는 리소스는 Role로 진행되며, 그외 Cluster 범위는 ClusterRole로 권한을 제어할 수 있다.
+[인증(Authentication)](https://www.notion.so/7530019ba1594a0da4b7786645a1de3e) 방식으로 권한을 만드는 예시이다. 네임스페이스 범위안에 있는 리소스는 Role로 진행되며, 그외 Cluster 범위는 ClusterRole로 권한을 제어할 수 있다.
 
 
 권한을 생성하고 RoleBinding, ClusterRoleBinding 을 통해 특정 주체와 결합해야 한다.
