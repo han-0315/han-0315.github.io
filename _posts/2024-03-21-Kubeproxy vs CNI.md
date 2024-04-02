@@ -148,22 +148,22 @@ Calico는 여러 개의 모듈이 존재한다. BIRD(BGP), ConfD, Felix 가 핵�
 - Felix: etcd로 부터 정보를 읽어 라우팅 테이블을 만든다. 라우팅 테이블은 kube-proxy 모드에 맞게 조작한다.
 - Proxy-ARP: 해당 네트워크에 존재하지 않는 ARP 요청에 대한 대리 응답이 가능하다. 여기서 cali123이 Proxy-ARP 역할을 수행한다.
 
-![02-04.png](/assets/img/post/Kubeproxy%20vs%20CNI/1.png)
+![Untitled.png](/assets/img/post/Kubeproxy%20vs%20CNI/1.png)
 
 
-[그림 출처: 커피고래님 블로그([https://coffeewhale.com/packet-network2](https://coffeewhale.com/packet-network2))]
+[그림 출처: [https://docs.tigera.io/calico/latest/reference/architecture/overview](https://docs.tigera.io/calico/latest/reference/architecture/overview)]
 
 
-이제 위의 그림을 설명하면, 우선 BGP가 서로와 정보를 교환하며 라우팅 정보를 교환한다. 만약 10.0.1.10 파드가 10.0.2.11으로 트래픽을 전송하는 예시를 따라가보자.
+이제 위의 그림을 설명하면, 우선 BGP가 서로와 정보를 교환하며 라우팅 정보를 교환한다. 만약 10.0.1.10 파드(노드1)가 10.0.2.11 파드(노드2)으로 트래픽을 전송하는 예시를 따라가보자.
 
 1. **(파드1)**기본 게이트웨이에 맞게 local-link(로컬 네트워크)로 ARP를 요청한다.
-2. **(cali123)** Proxy-ARP로, 10.0.2.11에 대한 ARP 요청을 자신의 MAC 주소로 응답한다.
-3. **(파드1)** 반환받은 MAC 주소(cali123)으로 트래픽을 전송한다.
-4. **(cali123)** 자신에게 온 트래픽을 커널 공간에서 netfilter(iptables라면)으로 라우팅한다.
-	1. 라우팅 옵션이 IPIP라면, **SRC 192.168.1.10 DST 192.168.1.11**로 캡슐화된다.
+2. **(calico)** Proxy-ARP로, 10.0.2.11에 대한 ARP 요청을 자신의 MAC 주소로 응답한다.
+3. **(파드1)** 반환받은 MAC 주소(**calico**)으로 트래픽을 전송한다.
+4. **(calico)** 자신에게 온 트래픽을 커널 공간에서 netfilter(iptables라면)으로 라우팅한다.
+	1. 라우팅 옵션이 IPIP라면, 예를 들어 **SRC 192.168.1.10(노드1) DST 192.168.1.11(노드2)**로 캡슐화된다.
 5. **노드2**는 자신에게 온 트래픽을 받는다.
-6. 커널에서 **cali123**으로 트래픽을 라우팅한다.
-7. (cali123)에서 캡슐화된 헤더를 제거하고 패킷을 파드2로 트래픽을 전송한다.
+6. 커널에서 **calico**으로 트래픽을 라우팅한다.
+7. (**calico**)에서 캡슐화된 헤더를 제거하고 패킷을 파드2(10.0.2.11)로 트래픽을 전송한다.
 
 이렇듯 CNI pod to pod의 네트워크를 구현하며, 터널링기능을 통해 우리는 다른 노드에 존재하는 파드와도 통신할 수 있다. EKS의 경우 노드와 파드의 네트워크 대역이 같으니, 터널링이 필요없다. 다만 네트워크 대역이 같으므로 파드의 개수의 한계가 있다.
 
