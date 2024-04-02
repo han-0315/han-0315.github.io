@@ -1,15 +1,15 @@
 ---
 layout: post
-title: Linux Virtual File System 정리
+title: Linux File System 정리
 date: 2024-03-16 09:00 +0900 
-description: Linux VFS 정리
+description: Linux File System 정리
 category: [Linux, File system] 
 tags: [System, SE, Linux, Network]
 pin: false
 math: true
 mermaid: true
 ---
-Linux VFS 정리 및 분석
+Linux File System 정리
 <!--more-->
 
 
@@ -66,7 +66,13 @@ ext 파일시스템은 처음에 마운트할 때, 물리디스크를 여러 개
 즉, “`Disk` > `Partitions` > `Block Groups` > `Super Block, Inode, … ,Data Block`”으로 이뤄져있다. 실제 데이터는 Data Block에서 기록된다.
 
 
-![Untitled.png](/assets/img/post/Linux%20File%20System%20정리/1.png)
+![Untitled.png](/assets/img/post/Linux%20File%20System%20정리/2.png)
+
+
+![structure.webp](/assets/img/post/Linux%20File%20System%20정리/3.webp)
+
+
+![structure.webp](/assets/img/post/Linux%20File%20System%20정리/4.webp)
 
 
 사진 출처: [[https://recoverhdd.com/blog/the-ext-ext2-ext3-ext4-filesystem.html](https://recoverhdd.com/blog/the-ext-ext2-ext3-ext4-filesystem.html)]
@@ -101,7 +107,7 @@ ext 파일시스템은 처음에 마운트할 때, 물리디스크를 여러 개
 만약 `/a/b/c.c` 경로에 존재하는 파일이라면, 아래와 같은 순서로 이뤄진다. 
 
 
-![dirinode.jpg](/assets/img/post/Linux%20File%20System%20정리/4.jpg)
+![dirinode.jpg](/assets/img/post/Linux%20File%20System%20정리/5.jpg)
 
 
 [그림 출처: [https://pages.cs.wisc.edu/~bart/537/lecturenotes/s25.html](https://pages.cs.wisc.edu/~bart/537/lecturenotes/s25.html)]
