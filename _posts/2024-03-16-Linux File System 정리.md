@@ -68,13 +68,6 @@ ext 파일시스템은 처음에 마운트할 때, 물리디스크를 여러 개
 
 ![Untitled.png](/assets/img/post/Linux%20File%20System%20정리/2.png)
 
-
-![structure.webp](/assets/img/post/Linux%20File%20System%20정리/3.webp)
-
-
-![structure.webp](/assets/img/post/Linux%20File%20System%20정리/4.webp)
-
-
 사진 출처: [[https://recoverhdd.com/blog/the-ext-ext2-ext3-ext4-filesystem.html](https://recoverhdd.com/blog/the-ext-ext2-ext3-ext4-filesystem.html)]
 
 
