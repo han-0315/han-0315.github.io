@@ -16,7 +16,7 @@ Linux File System 정리
 ## 파일시스템
 
 
-컴퓨터의 하드디스크는 주로 SSD를 이용한다. 같은 SSD이지만, 사용하는 파일시스템은 다르다. 맥북에서는 APFS라는 파일시스템을 사용하는 반면 리눅스에서는 EXT4, XFS 등 다른 파일시스템을 사용한다. 파일시스템은 어떤 과정으로 실제 디스크에 데이터를 저장하는 지 EXT 유형으로 알아보자.
+컴퓨터의 하드디스크는 주로 SSD를 이용한다. 같은 SSD이지만, 사용하는 파일시스템은 다르다. 맥북에서는 APFS라는 파일시스템을 사용하는 반면 리눅스에서는 EXT4, XFS 등 다른 파일시스템을 사용한다. 파일시스템은 어떤 과정으로 실제 디스크에 데이터를 저장하는지 EXT 유형으로 알아보자.
 
 
 **[Mac Book]**
@@ -51,7 +51,7 @@ tmpfs          tmpfs      96M     0   96M   0% /run/user/0
 ## ext
 
 
-나는 많은 파일시스템 중 ext를 선택한 이유는 현재 많은 리눅스 배포판에서 사용중인 파일시스템이기에 그렇다.
+나는 많은 파일시스템 중 ext를 선택한 이유는 현재 많은 리눅스 배포판에서 사용 중인 파일시스템이기에 그렇다.
 
 
 우선 ext에 대해 알아보면, EXT는 Extended file system의 약자로 리눅스 파일시스템 중 하나이다. 1992년 4월 처음 리눅스에 도입되었고, 오늘날 많은 배포판에서 사용된다. 
@@ -60,13 +60,20 @@ tmpfs          tmpfs      96M     0   96M   0% /run/user/0
 ### 구조
 
 
-ext 파일시스템은 처음에 마운트할 때, 물리디스크를 여러 개의 파티션으로 분리하여 관리한다. 하나의 파티션은 여러 Block Group으로 이뤄져있다. 하나의 Block Group은 그림과 같이 Super Block, Inode, Data Block 등으로 구분되어있다.
+ext 파일시스템은 처음에 마운트할 때, 물리 디스크를 여러 개의 파티션으로 분리하여 관리한다. 하나의 파티션은 여러 Block Group으로 이루어져있다. 하나의 Block Group은 그림과 같이 Super Block, Inode, Data Block 등으로 구분된다.
 
 
 즉, “`Disk` > `Partitions` > `Block Groups` > `Super Block, Inode, … ,Data Block`”으로 이뤄져있다. 실제 데이터는 Data Block에서 기록된다.
 
 
-![Untitled.png](/assets/img/post/Linux%20File%20System%20정리/2.png)
+![Untitled.png](/assets/img/post/Linux%20File%20System%20정리/1.png)
+
+
+![structure.webp](/assets/img/post/Linux%20File%20System%20정리/2.webp)
+
+
+![structure.webp](/assets/img/post/Linux%20File%20System%20정리/3.webp)
+
 
 사진 출처: [[https://recoverhdd.com/blog/the-ext-ext2-ext3-ext4-filesystem.html](https://recoverhdd.com/blog/the-ext-ext2-ext3-ext4-filesystem.html)]
 
@@ -95,12 +102,12 @@ ext 파일시스템은 처음에 마운트할 때, 물리디스크를 여러 개
 2. (1)에서 확인한 정보로 data block을 찾아간다.
 	1. 해당 데이터는 디렉터리이므로, 디렉터리에 존재하는 파일들의 inode 번호를 가지고 있다.
 3. (2)에서 확인한 test.c의 inode 번호를 통해, inode table에서 inode 정보를 확인한다.
-4. (1)과 같이 inode 정보를 통해 data block을 찾아간다.
+4. (1)과같이 inode 정보를 통해 data block을 찾아간다.
 
 만약 `/a/b/c.c` 경로에 존재하는 파일이라면, 아래와 같은 순서로 이뤄진다. 
 
 
-![dirinode.jpg](/assets/img/post/Linux%20File%20System%20정리/5.jpg)
+![dirinode.jpg](/assets/img/post/Linux%20File%20System%20정리/4.jpg)
 
 
 [그림 출처: [https://pages.cs.wisc.edu/~bart/537/lecturenotes/s25.html](https://pages.cs.wisc.edu/~bart/537/lecturenotes/s25.html)]
