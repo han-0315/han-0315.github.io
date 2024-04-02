@@ -4,7 +4,7 @@ title: Google Search Console 인덱싱 자동화, 인덱싱 오류가 발생할 
 date: 2024-01-24 09:10 +0900 
 description: Google Search Console 인덱싱 자동화, 인덱싱 오류가 발생할 때 해결법
 category: [블로그, 인덱싱] 
-tags: [색인, 페이지, 인덱싱, 자동화] 
+tags: [색인, 페이지, 인덱싱, 자동화]
 image:
   path: /assets/img/logo/google/SearchConsole.png
   alt: Google Search Console
@@ -22,7 +22,7 @@ Google Search Console 인덱싱 자동화
 ### 배경
 
 
-Google Search Console에 블로그를 등록하면, 구글이 자동으로 사이트맵을 읽어오고 사이트맵에 있는 URL을 통해 인덱싱을 진행한다. 하지만, 생각보다 시간이 오래 소요된다. (필자와 같은 경우 2주 이상)
+Google Search Console에 블로그를 등록하면, 구글이 자동으로 사이트맵을 읽어오고 사이트맵에 있는 URL을 통해 인덱싱을 진행한다. 하지만, 생각보다 시간이 오래 소요된다. (필자의 경우 2주 이상)
 
 
 **[문제의 사진]**
@@ -31,7 +31,7 @@ Google Search Console에 블로그를 등록하면, 구글이 자동으로 사�
 ![Untitled.png](/assets/img/post/Search%20Console%20인덱싱자동화/1.png)
 
 
-2주정도 기다렸는데 반영이 안되어있길래, 오류가 있는지 검사하고 수동으로 신청을 해봤다. 수동으로는 1~2일만에 인덱싱이 잘되길래 수동으로 하려고했다. 하지만 페이지의 개수가 150개 이상..그리고 페이지 하나당 처리를 기다리는데 시간이 오래걸린다. 그래서 API를 통해 사이트맵에 있는 URL 인덱싱을 요청하기로 한다.
+2주 정도 기다렸는데 반영이 안되어있길래, 오류가 있는지 검사하고 수동으로 신청을 해봤다. 수동으로는 요청 후 1~2일후에 인덱싱이 되었다. 하지만 페이지의 개수가 150개 이상..그리고 페이지 하나당 처리를 기다리는데 시간이 오래걸린다. 그래서 API를 통해 사이트맵에 있는 URL 인덱싱을 요청하기로 한다.
 
 
 ### 사전 준비
@@ -40,7 +40,7 @@ Google Search Console에 블로그를 등록하면, 구글이 자동으로 사�
 Indexing 요청을 진행하려면 Google API를 사용해야한다. 사용할 때, 여러 인증 절차가 있어 복잡하다. 
 
 
-우선 GoogleCloud에서 Services Account를 만들고 API를 열어놔야하고, Google SearchConsole에서 앞서 만든 Service Account 계정을 등록해줘야한다.
+우선 Google Cloud에서 Services Account를 만들고 API를 활성화하고, Google SearchConsole에서 앞서 만든 Service Account 계정 등록이 필요하다.
 
 
 **[Google Cloud 설정]**
@@ -64,7 +64,7 @@ Indexing 요청을 진행하려면 Google API를 사용해야한다. 사용할 �
 **[Google Search Console 설정]**
 
 
-위에서 생성한 Services Account 계정을 Search Console에도 등록해줘야 한다. 
+위에서 생성한 Services Account 계정을 Search Console에도 등록한다.
 
 - [Google Search Console](https://search.google.com/u/1/search-console/index?resource_id=sc-domain%3Ahandongbee.com&pages=ALL_URLS)에 접속하여 자신의 도메인을 선택한다.
 - 왼쪽 메뉴에서 **설정 > 사용자 및 권한**을 선택한다.
@@ -191,8 +191,8 @@ handler()
 ### 정리
 
 
-귀찮은 작업을 API를 통해 빠르게 코드를 제작할 수 있었다. 코드는 일단 AWS Lambda 형식으로 만들었는데, 아직까지는 Lambda로 옮길 이유를 못찾겠어서 로컬에서 돌리고 있다. 
-아직 결과는 안나왔는데, 결과가 나오면 업데이트 예정이다. 수동으로 했을 때 1~3일정도 소요됐다. 현재(2024/01/24) 코드를 실행했으니, 3일 정도 뒤에 업데이트가 되면 결과를 정리해서 업데이트할 예정이다.
+귀찮은 작업을 API를 통해 빠르게 코드를 제작할 수 있었다. 코드는 일단 AWS Lambda 형식으로 만들었는데, 아직은 클라우드로 옮길 이유를 못찾겠어서 로컬에서 돌리고 있다. 
+아직 인덱싱 결과는 안나왔는데, 결과가 나오면 업데이트 예정이다. 수동으로 했을 때 1~3일 정도 소요됐다. 현재(2024/01/24) 코드를 실행했으니, 3일 정도 뒤에 업데이트가 되면 결과를 정리해서 업데이트할 예정이다.
 
 
 *업데이트 결과(2024/01/25)
@@ -204,5 +204,5 @@ handler()
 업데이트 결과 다음과 같이, 크롤링됨 - 현재 색인이 생성되지 않음으로 바뀌었다. 하지만, 실제 구글에 포스팅 제목으로 검색해보면 잘나오는 것을 확인할 수 있다.
 
 
-추가로 API 요청 할당량이 존재한다. publish는 하루당 200개, getMetadata는 분당 180개, 모든 API 총합 할당량은 분당 600개이다. 페이지 수가 200개가 넘어가면 메타데이터를 조회하여 URL을 선택하는 과정에서 할당량을 넘어서게된다. 별도로 publish 요청을 한 URL을 저장하는 방식으로 getMetadata API 양을 줄여야 할 것 같다.
+추가로 API 요청 할당량이 존재한다. `publish`는 하루당 200개, `getMetadata`는 분당 180개, 모든 API 총합 할당량은 분당 600개이다. 페이지 수가 200개가 넘어가면 메타데이터를 조회하여 URL을 선택하는 과정에서 할당량을 넘어서게 된다. 별도로 `publish` 요청을 한 URL을 저장하는 방식으로 `getMetadata` API 양을 줄여야 할 것 같다.
 
