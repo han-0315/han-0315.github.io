@@ -35,7 +35,7 @@ mermaid: true
 #### 인증
 
 
-인증에서는 해당 클라이언트가 적합한 대상인지 확인한다. kubectl로 명령을 진행하면, ./kube/config 에 있는 `certificate-authority-data`를 이용하여 판단한다. 
+인증에서는 해당 클라이언트가 적합한 대상인지 확인한다. kubectl로 명령을 진행하면, ./kube/config 에 있는 `certificate-authority-data`를 이용하여 판단한다. 이 방식은 HTTPS 인증 방식과 유사하다. 만약, API를 직접 호출한다면 Token을 통해 인증할 수 있으며 여러 방법이 있다.
 
 
 #### 인가
@@ -113,10 +113,7 @@ $ kubectl get pods --as dev-user
 ### 권한만드는 법
 
 
-[인증(Authentication)](https://www.notion.so/7530019ba1594a0da4b7786645a1de3e) 방식으로 권한을 만드는 예시이다. 네임스페이스 범위안에 있는 리소스는 Role로 진행되며, 그외 Cluster 범위는 ClusterRole로 권한을 제어할 수 있다.
-
-
-권한을 생성하고 RoleBinding, ClusterRoleBinding 을 통해 특정 주체와 결합해야 한다.
+네임스페이스 범위안에 있는 리소스는 Role로 진행되며, 그외 Cluster 범위는 ClusterRole로 권한을 제어할 수 있다. 권한을 생성하고 RoleBinding, ClusterRoleBinding 을 통해 특정 주체와 결합해야 한다.
 
 - Role/ClusterRole
 
