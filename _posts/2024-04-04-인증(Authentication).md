@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 쿠버네티스 인증(Authentication) 정리
-date: 2024-04-04 09:00 +0900 
+date: 2024-04-04 23:00 +0900 
 description: 쿠버네티스 인증 방법 정리
 category: [Kubernetes, Security] 
 tags: [Kubernetes, kube-apiserver, 인증, webhook, openi-connect, tls, X509, service account] 
@@ -60,6 +60,12 @@ HTTPS 인증에 사용되는 기술이며, TLS 핸드쉐이크와 같은 방식�
 4. 확인이 끝나면, 사용자가 자신의 Public 인증서를 api-server에게 건네준다.
 5. api-server는 Server CA를 통해 유효한 정보가 맞는지 확인한다.
 6. 5번까지 모두 정상적으로 처리되면, k8s-api-server는 사용자가 요청한 작업을 수행한다.
+
+![Untitled.png](/assets/img/post/인증(Authentication)/1.png)
+
+
+출처: [https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57](https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57)
+
 
 #### 단점
 
@@ -172,7 +178,7 @@ curl -k --header "Authorization: Bearer {위의 토큰의 값}" https://{kuberne
 OIDC(OpenID Connect)는 OpenID Foundation에서 정의한 개방형 Authentication 표준이며, 컨슈머 애플리케이션의 SSO를 목적으로 JSON 형식으로 개발했다. 
 
 
-![openid-connect-digram-blue.png](/assets/img/post/인증(Authentication)/1.png)
+![openid-connect-digram-blue.png](/assets/img/post/인증(Authentication)/2.png)
 
 
 출처: OpenID([https://openid.net/developers/how-connect-works/](https://openid.net/developers/how-connect-works/))
@@ -190,7 +196,7 @@ OIDC(OpenID Connect)는 OpenID Foundation에서 정의한 개방형 Authenticati
 쿠버네티스에서도 똑같은 원리로 작동한다. 우리가 IdP(Identity Provider)에 로그인하여 인증을 진행한다. 인증이 완료되면 토큰을 발급해 준다. 토큰을 통해 api-server에 접근하면 api-server에서 토큰의 유효성을 확인한 뒤 인증이 완료된다.
 
 
-![Untitled.png](/assets/img/post/인증(Authentication)/2.png)
+![Untitled.png](/assets/img/post/인증(Authentication)/3.png)
 
 
 출처: Kubernetes Docs([https://kubernetes.io/docs/reference/access-authn-authz/authentication](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens))
