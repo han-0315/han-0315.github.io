@@ -15,16 +15,16 @@ mermaid: true
 <!--more-->
 
 
-### 시작하기 앞서
+### 시작하기에 앞서
 
 
 일반 웹사이트의 경우 인증 정보를 전달받고, 내부 데이터베이스의 정보 중 일치하는 정보가 있다면 인증을 허가한다. 이와 다르게 **쿠버네티스는 유저의 정보를 관리하는 저장소가 별도로 없다.** 
 
 
-쿠버네티스의 인증체계는 X509, Tokens, Proxy 등 다양한 외부 시스템에 의존한다. 이 방식은 특별한 방식이 아닌 웹 서버의 인증방식과 같으며, 쿠버네티스 인증체계를 학습하며 간단한 웹사이트의 인증방식을 살펴볼 수 있다.
+쿠버네티스의 인증 체계는 X509, Tokens, Proxy 등 다양한 외부 시스템에 의존한다. 이 방식은 특별한 방식이 아닌 웹 서버의 인증 방식과 같으며, 쿠버네티스 인증 체계를 학습하며 간단한 웹사이트의 인증 방식을 살펴볼 수 있다.
 
 
-현재(2024/04/03) 공식문서에 나와있는 인증 방식은 아래와 같다.
+현재(2024/04/03) 공식문서에 나와 있는 인증 방식은 아래와 같다.
 
 - X.509 Certificate
 - Static token file
@@ -49,23 +49,17 @@ HTTPS 인증에 사용되는 기술이며, TLS 핸드쉐이크와 같은 방식�
 5. **서버:** 자신의 Private Key로 메시지를 복호화하고, 건네받은 마스터키를 통해 세션 키 생성
 6. 세션 키를 통해 암호화된 메시지를 서로 교환하며, TLS 인증이 정상적으로 작동되었음을 파악함
 
-#### 작동과정
+#### 작동 방식
 
 
-쿠버네티스에서는 X.509 인증방식도 위의 과정과 유사하다. 우선 쿠버네티스에서는 RootCA가 필요하다. **Root CA에서 Server CA와 Client CA를 발급한다.** 서버는 api-server에서 사용하고, 클라이언트는 사용자들이 사용하는 인증서이다.
+쿠버네티스에서는 X.509 인증 방식도 위의 과정과 유사하다. 우선 쿠버네티스에서는 RootCA가 필요하다. **Root CA에서 Server CA와 Client CA를 발급한다.** 서버는 api-server에서 사용하고, 클라이언트는 사용자들이 사용하는 인증서이다.
 
-1. 사용자가 k8s-api-server에게 인증서를 요청한다.
-2. k8s-api-server는 자신의 public 인증서를 건네준다.
+1. 사용자가 k8s-api-server에 인증서를 요청한다.
+2. k8s-api-server는 자신의 Public 인증서를 건네준다.
 3. 사용자가 건네받은 인증서가 유효한지(정상적인 api-server가 맞는지) Client CA를 통해 확인한다.
-4. 확인이 끝나면, 사용자가 자신의 public 인증서를 api-server에게 건네준다.
+4. 확인이 끝나면, 사용자가 자신의 Public 인증서를 api-server에게 건네준다.
 5. api-server는 Server CA를 통해 유효한 정보가 맞는지 확인한다.
 6. 5번까지 모두 정상적으로 처리되면, k8s-api-server는 사용자가 요청한 작업을 수행한다.
-
-<!-- ![Untitled.png](/assets/img/post/인증(Authentication)/1.png)
-
-
-출처: [https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57](https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57) -->
-
 
 #### 단점
 
@@ -73,7 +67,7 @@ HTTPS 인증에 사용되는 기술이며, TLS 핸드쉐이크와 같은 방식�
 X509를 이용한 방식은 한번 Private Key와 인증서가 노출되면 Root CA를 교체하지 않는 이상 노출을 막을 방법이 없다는 단점이 있다.
 
 
-## HTTP 인증방식
+## HTTP 인증 방식
 
 
 ### Static token file
@@ -93,7 +87,10 @@ X509를 이용한 방식은 한번 Private Key와 인증서가 노출되면 Root
 ### Bootstrap tokens
 
 
-새 클러스터를 생성하거나 기존 클러스터에 새 노드를 클러스터에 추가할 때 사용하기 위한 간단한 무기명 토큰이다. 동적으로 관리가 필요하기에 kube-system 네임스페이스에 생성한다. 만료되면 TokenCleaner 컨트롤러에 의해 제거된다. Bootstrap tokens을 만드는 방법은 아래의 YAML 파일과 같다. 
+새 클러스터를 생성하거나 기존 클러스터에 새 노드를 클러스터에 추가할 때 사용하기 위한 간단한 무기명 토큰이다. 동적으로 관리가 필요하기에 kube-system 네임스페이스에 생성한다. 만료되면 TokenCleaner 컨트롤러에 의해 제거된다. 
+
+
+아래는 Bootstrap tokens의 예시 YAML 파일이다.
 
 
 ```yaml
@@ -172,16 +169,16 @@ curl -k --header "Authorization: Bearer {위의 토큰의 값}" https://{kuberne
 ## **OIDC(OpenID connect)** 방식
 
 
-OIDC(OpenID Connect)는 OpenID Foundation에서 정의한 개방형 Authentication 표준이며, 컨슈머 어플리케이션의 SSO를 목적으로 JSON 형식으로 개발했다. 
+OIDC(OpenID Connect)는 OpenID Foundation에서 정의한 개방형 Authentication 표준이며, 컨슈머 애플리케이션의 SSO를 목적으로 JSON 형식으로 개발했다. 
 
 
-![openid-connect-digram-blue.png](/assets/img/post/인증(Authentication)/2.png)
+![openid-connect-digram-blue.png](/assets/img/post/인증(Authentication)/1.png)
 
 
 출처: OpenID([https://openid.net/developers/how-connect-works/](https://openid.net/developers/how-connect-works/))
 
 
-우리가 어떤 웹 서비스에 회원가입할 때, Google이나 네이버, 카카오 등을 통해 빠르게 회원가입할 수 있다. 이때 OpenID Connect가 사용된다. 우리가 Google로 회원가입을 선택하고, 구글의 로그인을 진행하면 구글에서 웹 서버로 인증 코드를 발급하는 방식이다. 
+우리가 어떤 웹 서비스에 회원가입할 때, 구글이나 네이버, 카카오 등을 통해 빠르게 회원 가입할 수 있다. 이때 OpenID Connect가 사용된다. 예를 들어 어떤 사용자가 A 웹사이트를 회원 가입할 때 구글로 인증을 선택하고, 구글의 로그인을 진행하면 구글에서 웹 서버로 인증 코드를 발급하는 방식이다.
 
 
 즉, 클라이언트는 외부시스템(IdP)에서 인증을 받으며 토큰이 생성된다. 서버는 이 토큰을 확인하여, 인증을 진행한다.
@@ -190,10 +187,10 @@ OIDC(OpenID Connect)는 OpenID Foundation에서 정의한 개방형 Authenticati
 ### OpenID Connect Tokens
 
 
-쿠버네티스에서도 똑같은 원리로 작동한다. 우리가 IdP(Identity Provider)에 로그인하여 인증을 진행한다. 인증이 완료되면 토큰을 발급해준다. 토큰을 통해 api-server에 접근하면 api-server에서 토큰의 유효성을 확인한 뒤 인증이 완료된다.
+쿠버네티스에서도 똑같은 원리로 작동한다. 우리가 IdP(Identity Provider)에 로그인하여 인증을 진행한다. 인증이 완료되면 토큰을 발급해 준다. 토큰을 통해 api-server에 접근하면 api-server에서 토큰의 유효성을 확인한 뒤 인증이 완료된다.
 
 
-![Untitled.png](/assets/img/post/인증(Authentication)/3.png)
+![Untitled.png](/assets/img/post/인증(Authentication)/2.png)
 
 
 출처: Kubernetes Docs([https://kubernetes.io/docs/reference/access-authn-authz/authentication](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#openid-connect-tokens))
@@ -203,10 +200,9 @@ OpenID Connect를 설정하려면 kube-apiserver.yaml 파일을 수정해야 한
 
 
 ```yaml
-...
-		-	--oidc-issuer-url=<OAuth IDP URL>
-		- --oidc-client-id=<client-id>
-		- --oidc-ca-file=/etc/kubernetes/pki/<idp-ca.crt>
+- --oidc-issuer-url=<OAuth IDP URL>
+- --oidc-client-id=<client-id>
+- --oidc-ca-file=/etc/kubernetes/pki/<idp-ca.crt>
 ```
 
 
@@ -222,7 +218,7 @@ OpenID Connect를 설정하려면 kube-apiserver.yaml 파일을 수정해야 한
 ### Webhook Token Authentication
 
 
-쿠버네티스 API 서버에도 웹훅을 구현할 수 있는 방법이 존재한다. 내가 인증 정보(Token)을 보내면 웹훅을 통해 외부시스템을 통해 인증을 확인할 수 있다.
+쿠버네티스 API 서버에도 웹훅을 구현할 수 있는 방법이 존재한다. 내가 인증 정보(Token)를 보내면 웹훅을 통해 외부 시스템에서 인증을 확인할 수 있다.
 
 
 웹훅을 사용하려면 kube-apiserver.yaml 파일을 수정해야 한다.
@@ -271,7 +267,7 @@ contexts:
 ## Proxy
 
 
-프록시 서버를 통해 인증을 진행한다. 외부 시스템을 통해 인증을 진행한다는 것은 웹훅과 유사하나, 쿠버네티스 뒷단이 아닌 앞단에서 인증을 진행한다는 것이 차이점이다. 즉, 웹훅은 **사용자 > k8s > 외부시스템**이고 프록시는 **사용자 > 외부시스템 > k8s**이다.
+프록시 서버를 통해 인증을 진행한다. 외부 시스템을 통해 인증을 진행한다는 것은 웹훅과 유사하나, 쿠버네티스 뒷단이 아닌 앞단에서 인증을 진행한다는 것이 차이점이다. 즉, 웹훅은 **사용자 > k8s > 외부시스템**이고 프록시는 **사용자 > 외부 시스템 > k8s**이다.
 
 
 ### Authenticating Proxy
