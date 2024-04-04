@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 쿠버네티스 인가(Authorization)정리
-date: 2024-04-04 09:00 +0900 
+date: 2024-04-04 23:00 +0900 
 description: 쿠버네티스 인가(Authorization)정리하기
 category: [Kubernetes, Security] 
 tags: [Kubernetes, kube-apiserver, 인가, Node, ABAC, RBAC, Webhook] 

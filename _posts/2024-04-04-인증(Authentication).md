@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 쿠버네티스 인증(Authentication) 정리
-date: 2024-04-04 23:00 +0900 
+date: 2024-04-04 09:00 +0900 
 description: 쿠버네티스 인증 방법 정리
 category: [Kubernetes, Security] 
 tags: [Kubernetes, kube-apiserver, 인증, webhook, openi-connect, tls, X509, service account] 
