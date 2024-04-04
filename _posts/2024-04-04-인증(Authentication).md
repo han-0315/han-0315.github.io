@@ -61,10 +61,10 @@ HTTPS 인증에 사용되는 기술이며, TLS 핸드쉐이크와 같은 방식�
 5. api-server는 Server CA를 통해 유효한 정보가 맞는지 확인한다.
 6. 5번까지 모두 정상적으로 처리되면, k8s-api-server는 사용자가 요청한 작업을 수행한다.
 
-![Untitled.png](/assets/img/post/인증(Authentication)/1.png)
+<!-- ![Untitled.png](/assets/img/post/인증(Authentication)/1.png)
 
 
-출처: [https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57](https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57)
+출처: [https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57](https://medium.com/swlh/how-we-effectively-managed-access-to-our-kubernetes-cluster-38821cf24d57) -->
 
 
 #### 단점
