@@ -278,5 +278,10 @@
     "id": "74b78b93e98642edaaa26c3e3d70bd00",
     "update_date": "2024-03-29",
     "post_title": "2024-03-29-Kubernetes Access Control"
+  },
+  {
+    "id": "7530019ba1594a0da4b7786645a1de3e",
+    "update_date": "2024-04-04",
+    "post_title": "2024-04-04-인증(Authentication)"
   }
 ]
