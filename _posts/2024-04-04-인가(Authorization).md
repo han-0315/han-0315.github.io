@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 쿠버네티스 인가(Authorization)정리
-date: 2024-04-04 23:00 +0900 
+date: 2024-04-04 09:00 +0900 
 description: 쿠버네티스 인가(Authorization)정리하기
 category: [Kubernetes, Security] 
 tags: [Kubernetes, kube-apiserver, 인가, Node, ABAC, RBAC, Webhook] 
@@ -143,7 +143,7 @@ ExecStart=/usr/local/bin/kube-apiserver \\
     --advertise-address=${INTERNAL_IP} \\
     --allow-privileged=true \\
     --apiserver-count=3 \\
-    **--authorization-mode=ABAC \\**
+    --authorization-mode=RBAC \\ #RBAC
     --bind-address=0.0.0.0 \\
     --enable-swagger-ui=true \\
     --etcd-servers=https://127.0.0.1:2379 \\
@@ -250,8 +250,8 @@ roleRef:
 
 ```yaml
 ...
-    - --authorization-mode=Webhook,... \
-		- --authorization-webhook-config-file=/path/to/webhook-config.yaml
+- --authorization-mode=Webhook,... \
+- --authorization-webhook-config-file=/path/to/webhook-config.yaml
 ```
 
 
