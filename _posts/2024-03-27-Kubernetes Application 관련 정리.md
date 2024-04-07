@@ -34,7 +34,7 @@ Bash로 예를 들면, `ENTRYPOINT`는 `/bin/bash` 이고, `CMD`는 `ls` 혹은 
 ### Kubernetes
 
 
-쿠버네티스에서 파드를 실행시킬 때, 위에서 진행했던 것과 같이 `ENTRYPOINT`와 `CMD`를 설정할 수 있다. 다만 용어가 조금 다르다. `ENTRYPOINT`는 commands로, `CMD`는 args로 표현된다.
+쿠버네티스에서 파드를 실행시킬 때, 위에서 진행했던 것과 같이 `ENTRYPOINT`와 `CMD`를 설정할 수 있다. 다만 용어가 조금 다르다. `ENTRYPOINT`는 `command`로, `CMD`는 `args`로 표현된다.
 
 
 ```yaml
@@ -46,7 +46,7 @@ spec:
   containers:
     - name: ubuntu
       image: ubuntu:latest
-      commands: ["/bin/sh", "-c"]
+      command: ["/bin/sh", "-c"]
       args:
         - echo "Hello, Kubernetes!"
       env:
@@ -72,15 +72,11 @@ metadata:
   name: test-pod
 spec:
   containers:
-    - name: ubuntu
-      image: ubuntu:latest
-      commands: ["/bin/sh", "-c"]
-      args:
-        - echo "Hello, Kubernetes!"
+    - name: nginx
+      image: nginx:alpine
       env:
         - name: COLOR
           value: "RED"
-
 ```
 
 
@@ -102,8 +98,8 @@ metadata:
   name: test-pod
 spec:
   containers:
-    - name: ubuntu
-      image: ubuntu:latest
+    - name: nginx
+      image: nginx:alpine
       env:
         - name: COLOR
           valueFrom:
@@ -132,8 +128,8 @@ metadata:
   name: test-pod
 spec:
   containers:
-    - name: ubuntu
-      image: ubuntu:latest
+    - name: nginx
+      image: nginx:alpine
       env:
         - name: COLOR
           valueFrom:
@@ -141,6 +137,29 @@ spec:
               name: app-config
               key: APP_COLOR
 
+```
+
+
+아래의 명령어를 통해 파드에 접속하여 환경변수를 확인한다.
+
+
+```bash
+$ kubectl exec test-pod -- env
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+HOSTNAME=test-pod
+COLOR=RED
+KUBERNETES_PORT_443_TCP_PROTO=tcp
+KUBERNETES_PORT_443_TCP_PORT=443
+KUBERNETES_PORT_443_TCP_ADDR=10.96.0.1
+KUBERNETES_SERVICE_HOST=10.96.0.1
+KUBERNETES_SERVICE_PORT=443
+KUBERNETES_SERVICE_PORT_HTTPS=443
+KUBERNETES_PORT=tcp://10.96.0.1:443
+KUBERNETES_PORT_443_TCP=tcp://10.96.0.1:443
+NGINX_VERSION=1.25.4
+PKG_RELEASE=1
+NJS_VERSION=0.8.3
+HOME=/root
 ```
 
 
@@ -166,8 +185,8 @@ metadata:
   name: test-pod
 spec:
   containers:
-    - name: ubuntu
-      image: ubuntu:latest
+    - name: nginx
+      image: nginx:alpine
       securityContext:
         runAsUser: 1000
         capabilities:
@@ -192,8 +211,8 @@ metadata:
   name: test-pod
 spec:
   containers:
-    - name: ubuntu
-      image: ubuntu:latest
+    - name: nginx
+      image: nginx:alpine
       automountServiceAccountToken: false
 
 ```
@@ -215,8 +234,8 @@ metadata:
   name: test-pod
 spec:
   containers:
-    - name: ubuntu
-      image: ubuntu:latest
+    - name: nginx
+      image: nginx:alpine
       resources:
         limits:
           memory: "200Mi"
