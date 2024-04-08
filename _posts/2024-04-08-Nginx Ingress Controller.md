@@ -40,15 +40,12 @@ Ingress란 주로 L7 계층 라우팅을 담당하는 reverse Proxy server로, `
 출처: [https://kubernetes.io/docs/concepts/services-networking/ingress/](https://kubernetes.io/docs/concepts/services-networking/ingress/)
 
 
-### Class
+### Annotation
 
 
 **주로 어노테이션을 통해 자신의 상태 값을 지정하며, 컨트롤러는 어노테이션을 보고 작업을 진행한다.**
 
-
-#### Class
-
-
+#### Ingress Class
 컨트롤러는 `ingress.class`를 확인하여 자신이 작업할 Ingress가 맞는지 확인한다. `ingress.class`를 통해 하나의 클러스터에 여러 Ingress 컨트롤러가 공존할 수 있다.
 
 
