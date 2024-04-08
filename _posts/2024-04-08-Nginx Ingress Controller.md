@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 쿠버네티스 Ingress 이해하기
-date: 2024-01-12 15:00 +0900 
+date: 2024-04-08 09:00 +0900 
 description: Nginx Ingress Controller를 통해 쿠버네티스 Ingress 이해하기
 category: [Kubernetes, Network] 
 tags: [Kubernetes, Services, Network, Ingress, Nginx] 
