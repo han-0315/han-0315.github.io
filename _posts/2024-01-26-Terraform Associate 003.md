@@ -3,7 +3,7 @@ layout: post
 title: Terraform Associate 003 후기
 date: 2024-01-25 21:00 +0900 
 description: Terraform Associate 003 취득 후기
-category: [자격증, Terraform] 
+category: [자격증, Terraform 003] 
 tags: [Terraform, 자격증, IaC] 
 pin: false
 math: true
