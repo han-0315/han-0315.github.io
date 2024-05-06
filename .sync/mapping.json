@@ -298,5 +298,10 @@
     "id": "dfaf4b1b06394fe5a6f41db619ae3d27",
     "update_date": "2024-04-08",
     "post_title": "2024-04-08-Nginx Ingress Controller"
+  },
+  {
+    "id": "b2355ae03c064dacbcde36bccff59a83",
+    "update_date": "2024-05-06",
+    "post_title": "2024-05-06-데이터베이스 정리"
   }
 ]
