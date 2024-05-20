@@ -18,4 +18,5 @@ order: 4
 #### 100일(2024-02-21)
 [블로그 운영 100일 후기 포스팅](https://www.handongbee.com/posts/%EB%B8%94%EB%A1%9C%EA%B7%B8-100%EC%9D%BC-%ED%9B%84%EA%B8%B0/)
 #### 180일(2024-05-11)
+[블로그 6개월 후기](https://www.handongbee.com/posts/%EB%B8%94%EB%A1%9C%EA%B7%B8-6%EA%B0%9C%EC%9B%94-%ED%9B%84%EA%B8%B0/)
 #### 1년(2024-11-11)
