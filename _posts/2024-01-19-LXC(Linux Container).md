@@ -1,16 +1,22 @@
 ---
 layout: post
 title: LXC란?
-date: 2024-01-19 15:00 +0900 
+date: 2024-01-19 21:10 +0900 
 description: Linux Container에 대해서
-category: [Linux, LXC] 
-tags: [LXC, 가상화, Docker] 
+category: [Docker, LXC] 
+tags: [LXC, Linux Container, 가상화, Docker] 
 pin: false
 math: true
 mermaid: true
 ---
 LXC란?
 <!--more-->
+
+
+**최근에 Docker에서 관련된 포스트가 나와 업데이트 합니다. 한번 읽어보시면 좋을 것 같습니다. (24/06/25)
+
+
+[https://www.docker.com/blog/lxc-vs-docker/](https://www.docker.com/blog/lxc-vs-docker/)
 
 
 ## LXC란?
