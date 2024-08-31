@@ -16,13 +16,7 @@ KANS 스터디 1주차 Process와 Container
 > 💡 **KANS 스터디**  
 > CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.  
 >   
-> 스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
-
-
-	CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.
-
-
-	스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
+> 스터디에 관심이 있으신 분은 [CloudNet Blog](https://gasidaseo.notion.site/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
 ### 시작하기에 앞서
@@ -46,12 +40,12 @@ Docker와 같은 컨테이너 기술은 논리적인 격리 기술을 이용하�
 
 
 ![image.png](/assets/img/post/Process와%20Container/1.png)
-
+출처: https://www.atlassian.com/microservices/cloud-computing/containers-vs-vms
 
 ####  [Process](https://www.youtube.com/watch?v=xewZYX1e5R8)
 
 
-OS를 배울 때, 프로세스를 배운다. 프로세스는 프로그램의 인스턴스이며, 실행되고 있는 프로그램을 의미한다. 컨테이너 또한, 논리적으로 잘 격리된 프로세스이며, 격리된 환경 속에서 호스트와의 연결을 Docker와 같은 엔진이 도와준다.
+OS를 배울 때 프로세스를 배운다. 프로세스는 프로그램의 인스턴스이며, 실행되고 있는 프로그램을 의미한다. 컨테이너도 마찬가지로 논리적으로 잘 격리된 프로세스이며, 격리된 환경 속에서 호스트와의 연결을 Docker와 같은 엔진이 도와준다.
 
 
 이번 포스트에서는 컨테이너에 들어가기 앞서, 본질인 프로세스와 관련된 명령어를 자세하게 살펴본다.
@@ -72,7 +66,7 @@ OS를 배울 때, 프로세스를 배운다. 프로세스는 프로그램의 인
 우리는 systemd를 통해 nginx와 같은 서비스를 부팅시 자동실행하도록 설정할 수 있는데, systemd 또한 init 프로세스 중 하나이다.
 
 
-또한, Init 프로세스는 주로 좀비프로세스를 회수하여 종료시킨다. 
+Init 프로세스는 주로 좀비프로세스를 회수하여 종료시킨다. 
 
 
 **참고자료**
@@ -162,7 +156,7 @@ VM page size:  16384 bytes
 	top -d 1 -n 5 -u root
 	```
 
-- htop: colorful top
+- htop: colorful top으로 프로세스를 기반으로 리소스 사용량을 보여준다.
 
 ### /proc
 
@@ -175,22 +169,23 @@ VM page size:  16384 bytes
 
 #### Sleep 프로세스를 동작시키고, 정보 확인하기
 
-- terminal 1
+**[terminal 1]**
 
 ```bash
 # terminal 1
 sleep 10000
 ```
 
-- terminal 2
+**[terminal 2]**
 
+- 프로세스 정보 확인
 ```bash
-
-## 프로세스 정보 확인
 pgrep sleep
 7024
+```
+- 프로세스 Dir 확인
 
-## 프로세스 Dir 확인
+```bash
 tree /proc/$(pgrep sleep) -L 1
 /proc/7024
 ├── arch_status
@@ -205,11 +200,12 @@ tree /proc/$(pgrep sleep) -L 1
 ├── timerslack_ns
 ├── uid_map
 └── wchan
-
-## 프로세스 cmd 
+```
+- 프로세스 cmd 
+```bash
 cat /proc/$(pgrep sleep)/cmdline ; echo
 sleep10000
-
-
 ```
+
+이와 같이 /proc에서 프로세스와 관련된 내용을 **실시간**으로 확인할 수 있다.
 
