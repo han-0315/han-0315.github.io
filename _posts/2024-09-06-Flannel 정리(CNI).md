@@ -19,12 +19,6 @@ KANS 스터디 2주차 CNI, Flannel 알아보기
 > 스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
-	CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.
-
-
-	스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
-
-
 ### 들어가며
 
 
@@ -100,11 +94,11 @@ kind 배포 파일이다. flannel 설치를 위해 기본 CNI 생성을 disables
 
 
 ```bash
-cat <<EOF> **kind-cni.yaml**
-kind: **Cluster**
+cat <<EOF> kind-cni.yaml
+kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
-- role: **control-plane**
+- role: control-plane
   labels:
     mynode: control-plane
   extraPortMappings:
@@ -132,35 +126,35 @@ nodes:
   - |
     kind: KubeProxyConfiguration
     metricsBindAddress: 0.0.0.0
-- role: **worker**
+- role: worker
   labels:
     mynode: worker
-- role: **worker**
+- role: worker
   labels:
     mynode: worker2
-**networking:
-  disableDefaultCNI: true**
+  networking:
+  disableDefaultCNI: true
 EOF
 ```
 
 - 클러스터 생성
 
 ```bash
-**kind create cluster --config kind-cni.yaml --name myk8s** --image kindest/node:**v1.30.4**
+kind create cluster --config kind-cni.yaml --name myk8s --image kindest/node:v1.30.4
 ```
 
 - 필요 도구 설치
 
 ```bash
-docker exec -it **myk8s****-control-plane sh -c '**apt update && apt install tree jq psmisc lsof wget bridge-utils tcpdump iputils-ping htop git nano -y'
-docker exec -it **myk8s****-worker  sh -c '**apt update && apt install tree jq psmisc lsof wget bridge-utils tcpdump iputils-ping -y'
-docker exec -it **myk8s****-worker2 sh -c '**apt update && apt install tree jq psmisc lsof wget bridge-utils tcpdump iputils-ping -y'
+docker exec -it myk8s-control-plane sh -c 'apt update && apt install tree jq psmisc lsof wget bridge-utils tcpdump iputils-ping htop git nano -y'
+docker exec -it myk8s-worker  sh -c 'apt update && apt install tree jq psmisc lsof wget bridge-utils tcpdump iputils-ping -y'
+docker exec -it myk8s-worker2 sh -c 'apt update && apt install tree jq psmisc lsof wget bridge-utils tcpdump iputils-ping -y'
 ```
 
 - flannel CNI 생성
 
 ```bash
-**kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml**
+kubectl apply -f https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
 ```
 
 
@@ -174,12 +168,12 @@ curl -O https://raw.githubusercontent.com/han-0315/han-0315.github.io/main/asset
 - 해당 파일을 각 node container에 옮겨주면, flannel이 정상적으로 지원한다.
 
 ```bash
-docker cp **bridge** myk8s-control-plane:/opt/cni/bin/bridge
-docker cp **bridge** myk8s-worker:/opt/cni/bin/bridge
-docker cp **bridge** myk8s-worker2:/opt/cni/bin/bridge
+docker cp bridge myk8s-control-plane:/opt/cni/bin/bridge
+docker cp bridge myk8s-worker:/opt/cni/bin/bridge
+docker cp bridge myk8s-worker2:/opt/cni/bin/bridge
 _docker exec -it myk8s-control-plane  chmod 755 /opt/cni/bin/bridge
 docker exec -it myk8s-worker         chmod 755 /opt/cni/bin/bridge
-docker exec -it myk8s-worker2        chmod 755 /opt/cni/bin/bridge_
+docker exec -it myk8s-worker2        chmod 755 /opt/cni/bin/bridge
 ```
 
 - 파드 IP 할당 유무 확인
@@ -221,12 +215,12 @@ cat <<EOF | kubectl create -f -
 apiVersion: v1
 kind: Pod
 metadata:
-  name: **pod-1**
+  name: pod-1
   labels:
     app: pod
 spec:
-  **nodeSelector**:
-    kubernetes.io/hostname: **myk8s-worker**
+  nodeSelector:
+    kubernetes.io/hostname: myk8s-worker
   containers:
   - name: netshoot-pod
     image: nicolaka/netshoot
@@ -237,12 +231,12 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: **pod-2**
+  name: pod-2
   labels:
     app: pod
 spec:
-  **nodeSelector**:
-    kubernetes.io/hostname: **myk8s-worker2**
+  nodeSelector:
+    kubernetes.io/hostname: myk8s-worker2
   containers:
   - name: netshoot-pod
     image: nicolaka/netshoot
@@ -301,7 +295,7 @@ default via 172.18.0.1 dev eth0
 2번째 규칙의 의미를 자세하게 살펴보면 아래와 같다.
 
 - `10.244.1.0/24 dev cni0 proto kernel scope link src 10.244.1.1`
-	- **10.244.1.0/24** 대역으로 향하는 패킷은 cni0으로 전달된다.
+	- 10.244.1.0/24 대역으로 향하는 패킷은 cni0으로 전달된다.
 - `proto kernel scope link src 10.244.1.1`
 	- 커널에 의해 생성된 것이며, cni0과 연결된 link에만 적용된다.
 	- 이 인터페이스의 IP는 10.244.1.1이다.
@@ -345,9 +339,6 @@ docker exec -it myk8s-worker  bash
 >   
 > - **외부와의 통신은 노드의 eth0 인터페이스를 통해 전달**
 
-	- **같은 노드 내의 파드 통신은 cni0 인터페이스를 통해 전달**
-	- **다른 노드 내의 파드 통신은 flannel.1 인터페이스를 통해 전달**
-	- **외부와의 통신은 노드의 eth0 인터페이스를 통해 전달**
 
 #### wireshark
 
