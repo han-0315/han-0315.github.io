@@ -363,5 +363,10 @@
     "id": "feb4deb6549b435abb10e0c527457a4e",
     "update_date": "2024-09-06",
     "post_title": "2024-09-06-PAUSE 컨테이너(Pod)"
+  },
+  {
+    "id": "957e66f1362a4949bd1742e13c41b218",
+    "update_date": "2024-09-06",
+    "post_title": "2024-09-06-Flannel 정리(CNI)"
   }
 ]
