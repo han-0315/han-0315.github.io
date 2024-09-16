@@ -378,5 +378,10 @@
     "id": "103338d795b8809096b0f2d755ec5aee",
     "update_date": "2024-09-16",
     "post_title": "2024-09-16-Calico 파드 통신"
+  },
+  {
+    "id": "103338d795b880c2a621e9456c93e835",
+    "update_date": "2024-09-16",
+    "post_title": "2024-09-16-Calico 네트워크 모드"
   }
 ]
