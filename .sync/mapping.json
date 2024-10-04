@@ -398,5 +398,10 @@
     "id": "10f338d795b880c9a916f6580ba928d4",
     "update_date": "2024-09-29",
     "post_title": "2024-09-29-서비스 네트워크 session 옵션 살펴보기"
+  },
+  {
+    "id": "115338d795b8800fab4bdb6552d740a3",
+    "update_date": "2024-10-04",
+    "post_title": "2024-10-04-MetalLB 알아보기"
   }
 ]
