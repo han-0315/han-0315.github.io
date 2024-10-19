@@ -408,5 +408,10 @@
     "id": "11d338d795b8804a8b2ee7e11f225062",
     "update_date": "2024-10-13",
     "post_title": "2024-10-13-Ingress & Gateway 살펴보기"
+  },
+  {
+    "id": "124338d795b8809cb4cbf15ec5c63fca",
+    "update_date": "2024-10-20",
+    "post_title": "2024-10-20-istio"
   }
 ]
