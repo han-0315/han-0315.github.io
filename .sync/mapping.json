@@ -418,5 +418,10 @@
     "id": "124338d795b8807698f8f078f59effc3",
     "update_date": "2024-10-20",
     "post_title": "2024-10-20-Proxy(Pingora)"
+  },
+  {
+    "id": "12b338d795b88012b571e4205f233143",
+    "update_date": "2024-10-27",
+    "post_title": "2024-10-27-ebpf"
   }
 ]
