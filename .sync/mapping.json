@@ -428,5 +428,10 @@
     "id": "12b338d795b880d986f0c2a3e4905781",
     "update_date": "2024-10-27",
     "post_title": "2024-10-27-Cilium 살펴보기"
+  },
+  {
+    "id": "12b338d795b880aea491ea66ebe0e672",
+    "update_date": "2024-10-27",
+    "post_title": "2024-10-27-Cilium DSR"
   }
 ]
