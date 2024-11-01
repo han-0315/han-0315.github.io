@@ -433,5 +433,10 @@
     "id": "12b338d795b880aea491ea66ebe0e672",
     "update_date": "2024-10-27",
     "post_title": "2024-10-27-Cilium DSR"
+  },
+  {
+    "id": "131338d795b8808aaeb8c41efa97ebdd",
+    "update_date": "2024-11-01",
+    "post_title": "2024-11-01-Cilium 실습편"
   }
 ]
