@@ -19,10 +19,6 @@ mermaid: true
 > 스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
-	CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.
-
-
-	스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
 ### 실습 환경 설정
@@ -518,10 +514,10 @@ iptables를 확인하면, 아까와는 다르게 1개의 파드(현 노드에 �
 ![image.png](/assets/img/post/AWS%20EKS%20Network%20살펴보기/19.png)
 
 
-### **Network Policies**
+### Network Policies
 
 
-**“**Amazon VPC CNI now supports Kubernetes Network Policies” 이제 vpc-cni에서도 network policy를 완전하게 지원한다고 한다. cilium에서 봤던 eBPF를 통해 vpc-cni에서도 패킷 필터링을 진행한다고한다. 
+“Amazon VPC CNI now supports Kubernetes Network Policies” 이제 vpc-cni에서도 network policy를 완전하게 지원한다고 한다. cilium에서 봤던 eBPF를 통해 vpc-cni에서도 패킷 필터링을 진행한다고한다. 
 
 
 #### 실습 진행
