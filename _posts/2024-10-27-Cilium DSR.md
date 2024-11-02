@@ -19,12 +19,6 @@ Cilium DSR 알아보기
 > 스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
-	CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.
-
-
-	스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
-
-
 ### DSR이란
 
 
@@ -330,7 +324,8 @@ listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 출처: [https://en.wikipedia.org/wiki/IPv4](https://en.wikipedia.org/wiki/IPv4)
 
 
-옵션의 값을 확인해보자. 옵션은 20byte이후에 존재하니, 10개의 값을 건너뛰면 `9a08 7f7b 0a0a a8c0` 이다. 옵션은 순서대로 **유형**, **길이**에 대한 정보를 1byte씩 넣고, 이후 데이터를 넣는다. 즉 옵션 유형은 9a = 154이며, 길이는 08 = 8byte이다. 
+옵션의 값을 확인해보자. 옵션은 20byte이후에 존재하니, 10개의 값을 건너뛰면 `9a08 7f7b 0a0a a8c0` 이다. 옵션은 순서대로 **유형**, **길이**에 대한 정보를 1byte씩 넣고, 이후 데이터를 넣는다. 
+즉 옵션 유형은 **9a = 154**이며, 길이는 **08 = 8byte**이다. 
 
 
 나와있는 옵션 유형에 대한 [정보](https://www.iana.org/assignments/ip-parameters/ip-parameters.xhtml)에서 154 값에 대한 없다. 표준 옵션이 아니며, Cilium에서 사용하는 커스텀 옵션으로 보인다.
@@ -342,7 +337,9 @@ listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 출처: [http://www.ktword.co.kr/test/view/view.php?no=1900](http://www.ktword.co.kr/test/view/view.php?no=1900)
 
 
-값은 **0a0a a8c0**= 10, 10, 168, 192이다. 즉 k8s-s ip가 나오며, `7f7b`를 뒤집어서 `7b7f`으로 계산하면 31615가 나온다. 이는 **NodePort**이다. 클라이언트에서 **처음 방문한 노드의 ip**이며, 접근할 때 사용한 포트이다. `192.168.10.10:31615` 해당 정보를 통해 Cilium에서는 엔드포인트 파드에서 다시 클라이언트로 보낼 때, 자신이 위치한 노드의 IP가 아닌 클라이언트가 바라보는 `SRC IP:PORT`로 변경하여 DSR을 진행한다.
+값은 **0a0a a8c0**= 10, 10, 168, 192이다. 즉 **k8s-s ip**가 나오며,
+`7f7b`를 뒤집어서 `7b7f`으로 계산하면 **31615가** 나온다. 이는 **NodePort**이다. 
+클라이언트에서 **처음 방문한 노드의 ip**이며, 접근할 때 사용한 포트이다. `192.168.10.10:31615` 해당 정보를 통해 Cilium에서는 엔드포인트 파드에서 다시 클라이언트로 보낼 때, 자신이 위치한 노드의 IP가 아닌 클라이언트가 바라보는 `SRC IP:PORT`로 변경하여 DSR을 진행한다.
 
 
 ### 마치며
