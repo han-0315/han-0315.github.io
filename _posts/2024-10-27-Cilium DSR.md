@@ -31,7 +31,7 @@ DSR은 Direct Server Return의 약자로 LB를 통해 들어온 트래픽을 바
 최근의 DSR은 L3DSR을 사용한다. L3DSR이란 Layer 3계층(IP)를 활용하여 DSR을 진행한다. IPIP 헤더를 쌓아서 터널링(tunl0)을 하거나 아래의 그림처럼 헤더의 내용을 변경한다. 아래 그림에선 VIP에 대한 목적지 IP만 변경한다. 
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/1.png)
+![image.png](/assets/img/post/Cilium%20DSR/1.png)
 
 
 출처: [https://tech.kakao.com/posts/306](https://tech.kakao.com/posts/306)
