@@ -2,15 +2,15 @@
 theme: jekyll-theme-chirpy
 lang: ko
 timezone: Asia/Seoul
-title: 86.5도씨 # the main title
+title: 86.5🌡️ # the main title
 
-tagline: # it will display as the sub-title
+tagline: 이것저것 공부한 내용을 올립니다. # it will display as the sub-title
 
 description: >- # used by seo meta and the atom feed
   Dongbee's Blog
 url: "https://www.handongbee.com"
-github:
-  username: han-0315 # change to your github username
+# github:
+#   username: han-0315 # change to your github username
 
 social:
   name: Dongbee
@@ -33,7 +33,7 @@ theme_mode: [light] # [light, dark]
 img_cdn: https://cdn.jsdelivr.net/gh/han-0315/han-0315.github.io@main
 
 # the avatar on sidebar, support local or CORS resources
-avatar: /assets/img/avatar.png
+avatar: /assets/img/avatar-new.png
 
 # boolean type, the global switch for TOC in posts.
 toc: true
