@@ -46,7 +46,7 @@ DSR은 Direct Server Return의 약자로 LB를 통해 들어온 트래픽을 바
 기본적으로 쿠버네티스에서 NodePort 혹은 LoadBalancer Service나 ExternalIP를 통해 외부에서 들어오는 트래픽이라면 다른 노드로 리다이렉션될 수 있다. 만약 kube-proxy를 사용한다면 기본적으로 SNAT이 한번되기에 백엔드 서버에서는 클라이언트의 IP를 알기 힘들다. 이런 점 때문에 `externalTrafficPolicy=Local` 옵션을 사용하기도 하나, 이는 모든 노드에 해당 백엔드 서버가 존재해야 하며 로드밸런싱이 고르지 않게 될 수 있다.
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/2.png)
+![image.png](/assets/img/post/Cilium%20DSR/2.png)
 
 
 출처: [https://cilium.io/static/ae8ca98fe1a89b33ebd09f7dfc2d6eff/f9c4a/sock-1.png](https://cilium.io/static/ae8ca98fe1a89b33ebd09f7dfc2d6eff/f9c4a/sock-1.png)
@@ -58,7 +58,7 @@ Cilium 또한 외부 트래픽에 대해서는 기본적으로 SNAT 모드로 �
 아래의 그림과 같이 Cilium에서 DSR로 설정하면 백엔드 파드에서 클라이언트로 서비스의 IP와 PORT를 가지고 Return한다. (SRC가 서비스로 변경된다.)
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/3.png)
+![image.png](/assets/img/post/Cilium%20DSR/3.png)
 
 
 출처: [https://cilium.io/static/b4488d749f6e74376e90dcff34c1ab6b/0aaa4/dsr-with.png](https://cilium.io/static/b4488d749f6e74376e90dcff34c1ab6b/0aaa4/dsr-with.png)
@@ -244,7 +244,7 @@ while true; do curl -s k8s-s:31615 | grep Hostname;echo "-----";sleep 1;done
 아래와 같이 기본 구조라면 client ↔ k8s-s ↔ k8s-w1로 통신되어야 하기에 k8s-w1 > client로 향하는 트래픽도 보여야한다. 하지만, 여기서는 **client > k8s-w1로 향하는 트래픽만 보인다.**
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/4.png)
+![image.png](/assets/img/post/Cilium%20DSR/4.png)
 
 
 ##### k8s-s에서 80 혹은 NodePort에 대한 패킷 dump
@@ -259,7 +259,7 @@ while true; do curl -s k8s-s:31615 | grep Hostname;echo "-----";sleep 1;done
 다시 처음에 들어온 서버로 향하지 않고, 해당 **파드에서 바로 클라이언트로 전송하는 DSR**을 볼 수 있다.
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/5.png)
+![image.png](/assets/img/post/Cilium%20DSR/5.png)
 
 
 또한, k8s-w1에서 testpc ip로 필터링하면, **k8s-s:nodeport**의 값으로 나가는 것을 확인할 수 있다.
@@ -285,7 +285,7 @@ listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 마지막으로 Client에서 dump를 진행하면 아래와 같이 처음에 접근한 IP로 패킷이 들어오는 것을 확인할 수 있다. 위의 결과값과 동일하다. k8s-w1에서 패킷이 나갈때 src 정보로 자신의 노드 정보가 아닌 `k8s-s:nodeport`로 나간다.
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/6.png)
+![image.png](/assets/img/post/Cilium%20DSR/6.png)
 
 
 *해당 사진은 실습을 한번 종료하고 다시 진행한 것으로, NodePort 정보가 다른 실습 자료와 다릅니다.
@@ -297,7 +297,7 @@ listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 이제 자세하게 패킷을 분석해보자. k8s-s 에서 목적지 파드로 보낼 때, 아래와 같이 IP 옵션을 추가한다.
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/7.png)
+![image.png](/assets/img/post/Cilium%20DSR/7.png)
 
 
 옵션의 값은 아래와 같다. 위의 값은 16진수이며 2개의 값이 하나의 바이트를 의미한다. 
@@ -318,7 +318,7 @@ listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 앞의 47은 0100 0111로  4, 7의 의미를 갖는다. IP 패킷 구조는 **버전**과 **헤더의 길이**를 명시한다. 즉 4, 7의 의미는 ipv4이라는 뜻과 헤더의 길이는 7*4(padding) 28 byte라는 의미이다. 아래의 그림과 같이 20byte까지는 필수헤더 요소이다. 아래의 Option으로 28-20=8byte의 내용이 추가된 것을 알 수 있다.
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/8.png)
+![image.png](/assets/img/post/Cilium%20DSR/8.png)
 
 
 출처: [https://en.wikipedia.org/wiki/IPv4](https://en.wikipedia.org/wiki/IPv4)
@@ -331,7 +331,7 @@ listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 나와있는 옵션 유형에 대한 [정보](https://www.iana.org/assignments/ip-parameters/ip-parameters.xhtml)에서 154 값에 대한 없다. 표준 옵션이 아니며, Cilium에서 사용하는 커스텀 옵션으로 보인다.
 
 
-![image.png](/assets/img/post/Cilium%20DSR%20알아보기/9.png)
+![image.png](/assets/img/post/Cilium%20DSR/9.png)
 
 
 출처: [http://www.ktword.co.kr/test/view/view.php?no=1900](http://www.ktword.co.kr/test/view/view.php?no=1900)
