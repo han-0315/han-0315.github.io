@@ -15,8 +15,8 @@ url: "https://www.handongbee.com"
 social:
   name: Dongbee
   email: dongmin7115@gmail.com # change to your email address
-  links:
-    - https://github.com/han-0315
+  # links:
+  #   - https://github.com/han-0315
 
 google_site_verification: # Google Search Console verification code
 # ↑ --------------------------
