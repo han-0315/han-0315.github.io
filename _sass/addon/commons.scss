@@ -372,6 +372,9 @@ main {
   }
 
   p {
+    margin-top: 0.75rem;
+    margin-bottom: 0.75rem;
+
     >a.popup {
       &:not(.normal):not(.left):not(.right) {
         @include align-center;
