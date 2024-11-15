@@ -171,7 +171,7 @@ curl -O https://raw.githubusercontent.com/han-0315/han-0315.github.io/main/asset
 docker cp bridge myk8s-control-plane:/opt/cni/bin/bridge
 docker cp bridge myk8s-worker:/opt/cni/bin/bridge
 docker cp bridge myk8s-worker2:/opt/cni/bin/bridge
-_docker exec -it myk8s-control-plane  chmod 755 /opt/cni/bin/bridge
+docker exec -it myk8s-control-plane  chmod 755 /opt/cni/bin/bridge
 docker exec -it myk8s-worker         chmod 755 /opt/cni/bin/bridge
 docker exec -it myk8s-worker2        chmod 755 /opt/cni/bin/bridge
 ```
