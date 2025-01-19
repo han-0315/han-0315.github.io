@@ -10,10 +10,9 @@ math: true
 mermaid: true
 ---
 
-<!--more-->
-
-
 아래의 작성된 글과 그림은 [https://www.wireguard.com/papers/wireguard.pdf](https://www.wireguard.com/papers/wireguard.pdf)에서 확인하실 수 있습니다.
+
+<!--more-->
 
 
 ### 들어가며
