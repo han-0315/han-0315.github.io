@@ -10,9 +10,12 @@ math: true
 mermaid: true
 ---
 
-아래의 작성된 글과 그림은 [https://www.wireguard.com/papers/wireguard.pdf](https://www.wireguard.com/papers/wireguard.pdf)에서 확인하실 수 있습니다.
+
 
 <!--more-->
+
+
+아래의 작성된 글과 그림은 [https://www.wireguard.com/papers/wireguard.pdf](https://www.wireguard.com/papers/wireguard.pdf)에서 확인하실 수 있습니다.
 
 
 ### 들어가며
@@ -43,7 +46,7 @@ WireGuard는 어떻게 데이터를 암호화할까? 암호화 이전에 사전 
 
 
 SSH와 같이 사전의 키 생성 및 교환이 필요한데, 방식이 agnostic하다. (agnostic은 여기서 특정 방식에 얽매이지 않는다는 뜻이다.) 이런 접근 방식은 OpenSSH에서 영감을 받았다고 백서에 설명되어있다. 키를 교환하는 방식을 정해두지 않았고, 이를 상관쓰지 않는다. 이것은 **사용자의 몫**으로 바라보는 시각이다.
-즉 WireGuard를 사용하기 위해서 아래의 자신의 Public key, Private key를 설정하고 상대방의 Public Key를 사용자가 모두 등록하는 작업이 필요하다.
+즉 WireGuard를 사용하기 위해서 아래와 같이 자신의 Public key, Private key를 설정하고 상대방의 Public Key를 사용자가 모두 등록하는 작업이 필요하다.
 
 
 ![<2> Cryptokey Routing](/assets/img/post/WireGuard/2.png)
@@ -55,13 +58,13 @@ SSH와 같이 사전의 키 생성 및 교환이 필요한데, 방식이 agnosti
 WireGuard는 사전에 교환된 키를 기반으로 암호화를 진행한다. 하지만, 해당 키가 노출되어도 쉽게 해독할 수 없다. 어떻게 암호화를 진행하기에 이것이 가능할까?
 
 
-데이터 암호화에 사전에 교환된 키만 사용하는 것이 아니다. **임시 키도 사용**한다. Diffie–Hellman key 교환방식을 통해 대칭 키를 생성한다. 대칭키는 아래의 핸드쉐이크 과정에서 공유된다.
+데이터 암호화에 사전에 교환된 키만 사용하는 것이 아니다. **임시 키도 사용**한다. Diffie–Hellman key 교환 방식을 통해 대칭 키를 생성한다. 대칭키는 아래의 핸드쉐이크 과정에서 공유된다.
 
 
 ![<5.4.1> Protocol Overview](/assets/img/post/WireGuard/3.png)
 
 
-구체적으로 키를 교환하는 과정을 살펴보면 아래와 같은데, 간단하게 “핸드쉐이크를 진행하며 생성한 **임시키**와 사전에 확보한 상대방 **Public key**를 통해 여러 번의 해싱 함수를 거치며 최종적으로는 대칭키를 만들어낸다.”라고 생각해도 좋다.
+구체적으로 키를 교환하는 과정을 살펴보면 아래와 같은데 간단하게 “핸드쉐이크를 진행하며 생성한 **임시키**와 사전에 확보한 상대방 **Public key**를 통해 여러 번의 해싱 함수를 거치며 최종적으로는 대칭키를 만들어낸다.”라고 생각해도 좋다.
 
 
 #### 핸드쉐이크
@@ -87,7 +90,7 @@ $
 자신의 사전에 설정된 Public Key, Private key, 임시 Private Key 그리고 사전에 공유된 응답자의 Public Key를 기반으로 static과 timestamp를 만든다. 이 항목들로 **신원을 한번 더 검증**할 수 있다.
 
 
-msg.static 필드와 msg.timestamp를 계산하는 과정을 자세하게 살펴보고 싶다면, 아래의 수식을 참고하면 된다. (백서 PDF 11페이지)
+msg.static 필드와 msg.timestamp를 계산하는 과정을 자세하게 살펴보고 싶다면, 아래의 수식을 참고하면 된다. (백서 11p)
 
 
 $
@@ -130,7 +133,7 @@ Hᵢ := \text{HASH}(Hᵢ \parallel \text{msg.timestamp})$
 
 핸드쉐이크를 통해 세션키를 만들고 이를 통해 암호화 복호화를 진행한다. 구체적인 방식을 살펴보면**ChaCha20Poly1305**를 통해 암호화 및 복호화가 진행되며, 이는 **XOR 연산**을 기반으로 한다. XOR 연산은 복호화에 용이하다. 
 $
-A \oplus B \oplus B = A$ 와 같이 XOR 연산을 두 번하면 원래 데이터의 값이 되어 적은 연산으로 암호화,복호화가 가능하다. 
+A \oplus B \oplus B = A$ 와 같이 XOR 연산을 두 번하면 원래 데이터의 값이 되어 암호화 복호화에 용이하다. 
 
 
 ![<5.4.6> Subsequent Messages: Transport Data Messages](/assets/img/post/WireGuard/5.png)
