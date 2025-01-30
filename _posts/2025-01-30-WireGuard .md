@@ -34,7 +34,7 @@ WireGuard는 다양한 보안 위협으로부터 안전하게 통신을 유지�
 핸드셰이크 요청을 반복해서 보내는 공격자가 있다고 가정하자. 서버는 이 요청을 응답하는 과정에서 신뢰성 확인을 위해 Curve25519 계산이 필요하다. 이는 CPU 연산이 많이 필요로 하며 결국 서버가 CPU 리소스를 소진하여 비정상적인 상태를 가질 수 있다. WireGuard에서는 이를 방지하고자 쿠키 시스템을 사용한다. 
 
 
-![5.4.1 Protocol Overview](/assets/img/post/WireGuard%20/1.png)
+![5.4.1 Protocol Overview](/assets/img/post/WireGuard%202편/1.png)
 
 
 서버의 **부하 발생시** 핸드쉐이크를 진행하지 않고 **송신자에게 쿠키를 던져준다.** 이 쿠키는 송신자의 신원을 식별할 수 있으며, 공격자는 쿠키없이 다시 요청을 보내도 서버에서 무시하기에 Dos 공격을 방어할 수 있다.  자세한 방식을 살펴보면 아래와 같다.
@@ -53,7 +53,7 @@ WireGuard는 다양한 보안 위협으로부터 안전하게 통신을 유지�
 - $\text{msg.mac1} := \text{Mac} \Big( \text{Hash} (\text{Label-Mac1} \parallel S_{m'}^{\text{pub}}), \text{msg}_{\alpha} \Big)$
 - $\text{msg.mac2} := \text{Mac}(L_m, \text{msg}_{\beta})$, 여기서 $L_m$은 `m seconds` 이전에 받은 쿠키 메시지를 의미한다.
 
-![5.4.2 First Message: Initiator to Responder](/assets/img/post/WireGuard%20/2.png)
+![5.4.2 First Message: Initiator to Responder](/assets/img/post/WireGuard%202편/2.png)
 
 
 **(3)** 수신자는 올바른 MAC을 가진 송신자의 패킷만 수신한다. mac2가 없거나, 비정상적인 경우 이를 무시한다.
@@ -101,7 +101,7 @@ func stamp(t time.Time) Timestamp {
 실제 암호화가 이뤄진 후에는 counter를 통해 메시지의 순서를 알린다. 덕분에 WireGuard는 UDP 기반임에도 데이터의 순서를 알 수 있다. 또한 이 순서는 재전송 공격 방지에도 사용된다.
 
 
-![5.4.6 Subsequent Messages: Transport Data Messages](/assets/img/post/WireGuard%20/3.png)
+![5.4.6 Subsequent Messages: Transport Data Messages](/assets/img/post/WireGuard%202편/3.png)
 
 
 WireGuard에서 사용하는 2가지 방어시스템에 대해 알아봤다. 이제 실습을 들어가기 앞서 실제 통신이 어떤식으로 이뤄지는 지 구체적인 예시로 살펴보자.
@@ -113,7 +113,7 @@ WireGuard에서 사용하는 2가지 방어시스템에 대해 알아봤다. 이
 이제 WireGuard에서 패킷이 송신되고 수신되는 과정을 단계별로 살펴보자, 구성은 아래의 그림과 같다고 가정한다.
 
 
-![출처: https://www.wireguard.com/papers/wireguard.pdf](/assets/img/post/WireGuard%20/4.png)
+![출처: https://www.wireguard.com/papers/wireguard.pdf](/assets/img/post/WireGuard%202편/4.png)
 
 
 ### 송신 과정
@@ -305,25 +305,25 @@ ping 10.13.13.1
 #### 핸드셰이크
 
 
-![image.png](/assets/img/post/WireGuard%20/5.png)
+![image.png](/assets/img/post/WireGuard%202편/5.png)
 
 
 **Handshake Initiation**을 살펴보자 아래와 같이 임시키와 자신의 Public 키를 기반으로 만들어진 Static 키와 timestamp를 함께 확인할 수 있다. 
 
 
-![image.png](/assets/img/post/WireGuard%20/6.png)
+![image.png](/assets/img/post/WireGuard%202편/6.png)
 
 
 **Handshake Response**를 살펴보면, 아래와 같이 자신의 임시키를 보내고 현재는 부하가 존재하는 상태가 아니기에 쿠키 reply를 하지 않는다.
 
 
-![image.png](/assets/img/post/WireGuard%20/7.png)
+![image.png](/assets/img/post/WireGuard%202편/7.png)
 
 
 위 두 과정을 통해 신원 확인 및 세션키 생성이 완료되고 세션키를 통해 데이터를 암호화한다. 그렇기에 우리는 내부 데이터를 들여다볼 수 없다. 
 
 
-![image.png](/assets/img/post/WireGuard%20/8.png)
+![image.png](/assets/img/post/WireGuard%202편/8.png)
 
 
 #### wg0 인터페이스 dump 확인
@@ -332,7 +332,7 @@ ping 10.13.13.1
 wg0 인터페이스로 확인하면, 복호화가 완료된 데이터이므로 내부 데이터를 확인할 수 있다. 우리는 ping 통신을 진행했는데, 그 내용을 확인할 수 있으며 어떤 wg private IP로부터 왔는지도 알 수 있다.
 
 
-![image.png](/assets/img/post/WireGuard%20/9.png)
+![image.png](/assets/img/post/WireGuard%202편/9.png)
 
 
 ### 마치며
