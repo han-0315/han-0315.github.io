@@ -31,12 +31,14 @@ Linux Container의 약자로, 리눅스 인스턴스 내에서 컨테이너를 �
 - Dockfile: Dockerfile 혹은 Docker-compose를 통해 IaC 방식으로 쉽게 컨테이너를 설정할 수 있지만, LXC는 그렇지 않다.
 	- 네트워크 설정, 의존성 등 환경설정에 어려움이 많다. **즉, 일관된 환경을 제공하지 못한다.**
 
-애플리케이션 수준에선 그렇지만, OS 수준이나 HW 수준에서는 LXC가 성능이 더 좋다. LXC의 Container Rumtime은 Kernel로 통합되면서 시스템 리소스를 더 효율적으로 사용할 수 있다. 
+OS 수준이나 HW 수준에서는 LXC가 성능이 더 좋다. LXC의 Container Rumtime은 Kernel로 통합되면서 시스템 리소스를 더 효율적으로 사용할 수 있다. 
 
 
 ## LXC 사용해보기
 
-- LXC 설치
+
+#### LXC 설치
+
 
 ```bash
 sudo apt update
@@ -101,7 +103,7 @@ Creating mycontainer
 ```
 
 
-**[네트워크 연결하기]**
+#### 네트워크 연결하기
 
 - 브릿지를 하나 생성한다.
 
@@ -123,7 +125,7 @@ Creating mycontainer
 	+---------+----------+---------+-------------+---------+
 	```
 
-- 방금 만든 브릿지0을 컨테이너와 붙인다.
+- 방금 만든 `bridge0`을 컨테이너와 붙인다.
 
 	```bash
 	$ lxc network attach bridge0 mycontainer eth0
@@ -150,7 +152,7 @@ Creating mycontainer
 	```
 
 
-	위에서 확인한 컨테이너 IP에 접속한다.
+	위에서 확인한 컨테이너 IP에 접속하면 정상적으로 nginx 컨테이너와 연결되는 것을 확인할 수 있다.
 
 
 	```bash
