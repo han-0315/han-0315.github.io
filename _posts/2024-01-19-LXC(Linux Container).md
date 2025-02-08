@@ -19,7 +19,7 @@ LXC란?
 ## LXC란?
 
 
-Linux Container의 약자로, 리눅스 인스턴스 내에서 컨테이너를 운용할 수 있게한다. [링크](https://linuxcontainers.org/lxc/introduction/)를 통해 공식문서를 확인할 수 있다. 특징을 살펴보면 Namespace, cgroup, chroots 등 Docker와 상당히 유사하다. VM과 같이 가상환경을 제공하고 싶지만, 리소스 낭비를 최소화하고 싶었던 개발자들은 LXC를 만들었다. 
+Linux Container의 약자로, 리눅스 인스턴스 내에서 컨테이너를 운용할 수 있게한다. [링크](https://linuxcontainers.org/lxc/introduction/)를 통해 공식문서를 확인할 수 있다. 특징을 살펴보면 Namespace, cgroup 등 Docker와 상당히 유사하다. VM과 같이 가상환경을 제공하고 싶지만, 리소스 낭비를 최소화하고 싶었던 개발자들은 LXC를 만들었다. 
 
 
 ## Docker와 LXC
