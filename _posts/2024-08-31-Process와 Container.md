@@ -16,36 +16,42 @@ KANS 스터디 1주차 Process와 Container
 > 💡 **KANS 스터디**  
 > CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.  
 >   
-> 스터디에 관심이 있으신 분은 [CloudNet Blog](https://gasidaseo.notion.site/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
+> 스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
+
+
+	CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.
+
+
+	스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
 ### 시작하기에 앞서
 
 
-#### [도커, 가상화 이해하기](https://www.youtube.com/watch?v=zh0OMXg2Kog)
+우선 가상화가 왜 필요한지 알아보자. 가상화가 필요한 이유는 크게 아래와 같다.
+
+- 효율화: 하나의 서버를 쪼개서 더 많은 용도로 사용할 수 있다.
+- 사용성: 하나의 호스트에서 목적에 맞는 운영체제를 다양하게 띄울 수 있다.
+
+하지만, Vmware와 같은 가상화 툴을 이용하면, 아래와 같은 추가 Layer가 생긴다.
 
 
-가상화가 필요한 이유는 아래와 같다.
-
-1. 효율화(하나의 서버를 쪼개서 더 많은 용도로 사용할 수 있음)
-2. 사용성(VM을 통해 목적에 맞는 OS로 띄울 수 있음)
-
-하지만, Vmware와 같은 가상화 툴을 이용하면, 아래와 같은 depth가 생긴다.
+> “Host OS > **Vmware >** **Guest HW(가상화 NIC 등) > Guest OS** > (Guest) Application”
 
 
-“Host OS > **Vmware >** **Guest HW(가상화 NIC 등) > Guest OS** > (Guest) Application”
-
-
-Docker와 같은 컨테이너 기술은 논리적인 격리 기술을 이용하여, HW를 가상화하지 않고, **OS를 공유하는 방식으로 동작한다.** 
+Docker와 같은 컨테이너 기술은 논리적인 격리 기술을 이용하여, HW를 가상화하지 않고 **OS(Kernel)를 공유하는 방식**이기에 더 효율적으로 리소스를 사용할 수 있다.
 
 
 ![image.png](/assets/img/post/Process와%20Container/1.png)
-출처: https://www.atlassian.com/microservices/cloud-computing/containers-vs-vms
+
+
+출처: [https://www.atlassian.com/ko/microservices/cloud-computing/containers-vs-vms](https://www.atlassian.com/ko/microservices/cloud-computing/containers-vs-vms)
+
 
 ####  [Process](https://www.youtube.com/watch?v=xewZYX1e5R8)
 
 
-OS를 배울 때 프로세스를 배운다. 프로세스는 프로그램의 인스턴스이며, 실행되고 있는 프로그램을 의미한다. 컨테이너도 마찬가지로 논리적으로 잘 격리된 프로세스이며, 격리된 환경 속에서 호스트와의 연결을 Docker와 같은 엔진이 도와준다.
+OS를 배울 때, 프로세스를 배운다. 프로세스는 프로그램의 인스턴스이며, 실행되고 있는 프로그램을 의미한다. 컨테이너 또한 새로운 리소스가 아닌 논리적으로 **잘 격리된 프로세스**이며, 격리된 환경 속에서 Docker와 같은 컨테이너 엔진을 통해 호스트와 연결된다.
 
 
 이번 포스트에서는 컨테이너에 들어가기 앞서, 본질인 프로세스와 관련된 명령어를 자세하게 살펴본다.
@@ -57,16 +63,10 @@ OS를 배울 때 프로세스를 배운다. 프로세스는 프로그램의 인�
 ### Init Process
 
 
-리눅스 시스템에서는 기존의 프로세스를 fork하는 방식으로 새로운 프로세스가 생성된다. 
+리눅스 시스템에서는 **기존의 프로세스를 fork**하는 방식으로 새로운 프로세스가 생성된다. 새로운 명령어를 주고 싶으면 exec()를 통해 코드를 변경한다. COW(Copy on Write)방식이기에 비용이 적게들어, 나쁘지 않은 방식이다. 그렇기에 부팅시 태초의 프로세스가 실행되는데, 이것이 Init Process이다. Init 프로세스는 처음 작동할 때 필요한 프로그램들을 작동시킨다. 
 
 
-새로운 명령어를 주고 싶으면 exec()를 통해 코드를 변경한다. COW(Copy on Write)방식이기에 비용이 적게들어, 나쁘지 않은 방식이다. 그렇기에 부팅시 태초의 프로세스가 실행되는데, 이것이 Init Process이다. Init 프로세스는 처음 작동할 때 필요한 프로그램들을 작동시킨다. 
-
-
-우리는 systemd를 통해 nginx와 같은 서비스를 부팅시 자동실행하도록 설정할 수 있는데, systemd 또한 init 프로세스 중 하나이다.
-
-
-Init 프로세스는 주로 좀비프로세스를 회수하여 종료시킨다. 
+우리는 systemd를 통해 nginx와 같은 서비스를 부팅시 자동실행하도록 설정할 수 있는데, systemd 또한 init 프로세스 중 하나이다. 또한, Init 프로세스는 주로 좀비프로세스를 회수하여 종료시킨다.
 
 
 **참고자료**
@@ -156,36 +156,31 @@ VM page size:  16384 bytes
 	top -d 1 -n 5 -u root
 	```
 
-- htop: colorful top으로 프로세스를 기반으로 리소스 사용량을 보여준다.
+- htop: colorful top
 
 ### /proc
 
 
-실시간으로 커널이 업데이트 진행한다. /proc가 없다면, `ps`와 같은 명령어도 동작하지 않는다.
-
-
-/proc/{pid}에서 cpu, mem을 포함한 HW 정보와, 각 프로세스별 cmd, fd, stat 정보를 확인할 수 있다.
+실시간으로 커널이 프로세스에 대한 정보를 `/proc` 경로로 업데이트 진행한다. `/proc`가 없다면, `ps`와 같은 명령어도 동작하지 않는다. `/proc/{pid}`에서 cpu, mem을 포함한 HW 정보와, 각 프로세스별 cmd, fd, stat 정보를 확인할 수 있다.
 
 
 #### Sleep 프로세스를 동작시키고, 정보 확인하기
 
-**[terminal 1]**
+- terminal 1
 
 ```bash
 # terminal 1
 sleep 10000
 ```
 
-**[terminal 2]**
+- terminal 2
 
-- 프로세스 정보 확인
 ```bash
+## 프로세스 정보 확인
 pgrep sleep
 7024
-```
-- 프로세스 Dir 확인
 
-```bash
+## 프로세스 Dir 확인
 tree /proc/$(pgrep sleep) -L 1
 /proc/7024
 ├── arch_status
@@ -200,12 +195,15 @@ tree /proc/$(pgrep sleep) -L 1
 ├── timerslack_ns
 ├── uid_map
 └── wchan
-```
-- 프로세스 cmd 
-```bash
+
+## 프로세스 cmd 
 cat /proc/$(pgrep sleep)/cmdline ; echo
 sleep10000
 ```
 
-이와 같이 /proc에서 프로세스와 관련된 내용을 **실시간**으로 확인할 수 있다.
+
+### 마치며
+
+
+이번 포스팅에서는 컨테이너에 근간이 되는 프로세스에 대해 살펴봤다. 다음 포스트에서는 어떻게 컨테이너를 격리시킬 수 있었는지 다양한 격리방식에 대해 살펴볼 예정이다.
 
