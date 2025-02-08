@@ -16,16 +16,19 @@ KANS 스터디 1주차 Docker Network
 > 💡 **KANS 스터디**  
 > CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.  
 >   
-> 스터디에 관심이 있으신 분은 [CloudNet Blog](https://gasidaseo.notion.site/CloudNet-Blog-c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
+> 스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
-이번 포스트에서는 컨테이너에 들어가기 앞서, 본질인 프로세스와 관련된 명령어를 자세하게 살펴본다.
+	CloudNet에서 주관하는 KANS(**K**ubernetes **A**dvanced **N**etworking **S**tudy)으로 쿠버네티스 네트워킹 스터디입니다. 아래의 글은 스터디의 내용을 기반으로 작성했습니다.
 
 
-### 네트워크 모델
+	스터디에 관심이 있으신 분은 [CloudNet Blog](/c9dfa44a27ff431dafdd2edacc8a1863)를 참고해주세요.
 
 
-Docker 컨테이너에서 사용할 수 있는 다양한 종류의 네트워크 구성을 구현하는 데 사용된다. 주요 네트워크 모델은 아래와 같다.
+### **네트워크 모델**
+
+
+Docker 컨테이너에서 사용할 수 있는 다양한 종류의 네트워크 구성을 구현하는 데 사용된다. 주요 네트워크 모델은 아래와 같이 크게 3가지로 나뉜다.
 
 
 ![image.png](/assets/img/post/Docker%20Network/1.png)
@@ -37,7 +40,7 @@ Docker 컨테이너에서 사용할 수 있는 다양한 종류의 네트워크 
 #### 브릿지(Bridge)
 
 
-컨테이너의 기본 네트워크이다. 브리지 네트워크는 일반적으로 애플리케이션이 독립 실행형 컨테이너에서 실행되고 통신해야 할 때 사용된다. docker-proxy를 통해 호스트와 연결되며 통신이 필요하다면 port로 맵핑해줘야 한다.
+컨테이너의 기본 네트워크이다. 브리지 네트워크는 일반적으로 애플리케이션이 독립 실행형 컨테이너에서 실행되고 통신해야 할 때 사용된다. docker-proxy를 통해 호스트와 연결되며 통신이 필요하다면 port 포워딩이 필요하다. 
 
 
 #### 호스트(Host)
@@ -97,7 +100,7 @@ docker inspect nginx-host | jq '.[].NetworkSettings'
 ```
 
 
-**호스트 모드이기에, 별도의 포트포워딩 없이 호스트에서 접근할 수 있다.**
+****호스트 모드이기에, 별도의 포트포워딩 없이 호스트에서 접근할 수 있다.****
 
 
 ```bash
