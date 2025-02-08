@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Docker Storage 알아보기
-date: 2024-01-22 20:00 +0900 
+date: 2024-01-22 21:00 +0900 
 description: Docker Strage 알아보기
 category: [Docker, Storage] 
 tags: [UFS, LXC, Docker, Storage] 
@@ -13,37 +13,34 @@ Docker Storage 알아보기
 <!--more-->
 
 
-## Docker Storage 알아보기 #1
-
-
 > Docker이전의 컨테이너 기술인 Linux Container와 관련된 포스트는 [여기](https://www.handongbee.com/posts/LXC(Linux-Container)/)에서 확인할 수 있습니다.
 
 
-Docker는 유니온 마운트(파일 시스템)과 Docker Hub라는 원격 저장소를 기본적으로 제공함으로 유저들에게 선택받을 수 있었다. **이미지의 기본적인 구조는 UFS 방식을 사용하여 중복된 부분 없이 레이어를 효율적으로 관리할 수 있으며 여러 레이어를 합쳐 이미지로 만드는 것이 가능하다.** Docker의 Layer 아키텍처를 이해하려면 UFS에 대해 알아야한다. UFS는 유니온 파일시스템으로 여러 개의 파일시스템을 하나로 마운트할 수 있다. 즉, 각 Layer의 내용을 논리적으로 병합 가능하다.
+### 들어가며
 
 
-이제 UFS부터 자세하게 알아보자
+Docker를 사용하다보면 이미지를 가져올 때, 캐싱되는 것을 볼 수 있다. 레이어 기반의 강력한 캐싱이 Docker의 장점 중의 하나인데, 실제 이런 캐싱과 Docker Hub라는 이미지 저장소를 기본 제공하는 것이 큰 장점으로 보인다. 어떻게 이런 것이 가능할지 한번 찾아보자.
 
 
-### UFS 필요성
+## Docker Storage 알아보기 #1
 
 
-컨테이너에서는 기존 리눅스의 파일시스템에 더불어, Union File system(UFS)를 사용한다. ext4 등 파일시스템은 그 자체로 충분하지만, 컨테이너에서 Layer 아키텍처를 운용하기 위해선 UFS가 필요하다. 
+Docker 이미지는 UFS라는 유니온 파일 시스템을 사용한다. 덕분에 **중복된 부분 없이 레이어를 효율적으로 관리할 수 있으며 여러 레이어를 합쳐 이미지로 만드는 것이 가능하다.** Docker의 Layer 아키텍처를 이해하려면 UFS에 대해 알아야한다. UFS는 유니온 파일시스템으로 여러 개의 파일시스템을 하나로 마운트할 수 있다. 즉, 각 Layer의 내용을 논리적으로 병합 가능하다.
 
 
-기존의 파일시스템의 주요 문제는 다음과 같다.
-
-1. 비효율적인 공간사용
-기존의 파일시스템은, 같은 이미지를 사용해도 인스턴스를 생성할 때마다 물리적 공간이 필요하다. 즉, 기존의 것을 이용하는 것이 아닌 복사하여 사용한다.
-2. 부트스트랩 지연
-
-	컨테이너는 고도화된 프로세스이다. 프로세스를 생성하는 방법은 기존 프로세스를 Fork 한다. 즉, 부모 프로세스와 똑같은 복사본을 만든다. 만약, 복사해야 하는 메모리가 크다면 시간이 늘어난다. 
+그렇다면 UFS가 무엇이고, 어떻게 파일 시스템을 병합할 수 있는 것일지 알아보자.
 
 
 ### **UFS 란?**
 
 
-유니온 파일 시스템은 다른 파일 시스템위에서 작동한다. 파일시스템이 다른 여러 디렉터리를 단일 디렉터리로 마운트한다. 아래의 그림과 같은 결과를 낼 수 있다. UFS의 종류로는 UnionFS, AUFS, OverlayFS가 있다. [링크](https://medium.com/@knoldus/unionfs-a-file-system-of-a-container-2136cd11a779)에서 자세한 사진과 설명을 확인할 수 있다.
+유니온 파일 시스템은 다른 파일 시스템위에서 작동한다. 파일시스템이 다른 여러 디렉터리를 단일 디렉터리로 마운트한다. 아래의 그림과 같은 결과를 낼 수 있다. UFS의 종류로는 UnionFS, AUFS, OverlayFS가 있다.
+
+
+![image.png](/assets/img/post/Docker%20Storage/1.png)
+
+
+출처: Docker Docs
 
 
 **특징에 대해 알아보자**
@@ -103,6 +100,18 @@ boot  docker-entrypoint-initdb.d  etc            lib   media  opt  root  sbin  s
 ```
 
 
+#### UFS 필요성
+
+
+컨테이너에서는 기존 리눅스의 파일시스템에 더불어, Union File system(UFS)를 사용한다. 컨테이너에서 Layer 아키텍처를 운용하기 위해선 UFS가 필요하다. 기존의 파일시스템의 주요 문제는 다음과 같다.
+
+- 비효율적인 공간사용
+기존의 파일시스템은, 같은 이미지를 사용해도 인스턴스를 생성할 때마다 물리적 공간이 필요하다. 즉, 기존의 것을 이용하는 것이 아닌 복사하여 사용한다.
+- 부트스트랩 지연
+
+	컨테이너는 고도화된 프로세스이다. 프로세스를 생성하는 방법은 기존 프로세스를 Fork 한다. 즉, 부모 프로세스와 똑같은 복사본을 만든다. 만약, 복사해야 하는 메모리가 크다면 시간이 늘어난다. 
+
+
 ### Docker storage drivers
 
 
@@ -134,7 +143,7 @@ boot  docker-entrypoint-initdb.d  etc            lib   media  opt  root  sbin  s
 - 스토리지 드라이버 정보 확인
 
 ```bash
-$ docker info | grep Storage
+docker info | grep Storage
  Storage Driver: overlay2
 ```
 
@@ -177,7 +186,7 @@ docker image inspect nginx | jq  '.[].RootFS'
 - 아래의 명령어를 실행하여, 위에서 출력된 레이어의 정보를 확인할 수 있다.
 
 ```bash
-$ ls /var/lib/docker/image/overlay2/layerdb/sha256
+ls /var/lib/docker/image/overlay2/layerdb/sha256
 ```
 
 - 이제 docker에서 UFS를 사용하는 것을 확인해보자
@@ -288,7 +297,7 @@ Upper Layer가 합쳐진 새로운 이미지가 잘 생성된 것을 확인할 �
 
 ### 정리
 
-1. Docker는 Layer를 통해 이미지를 효율적으로 관리할 수 있으며, DockerHub를 통해 누구던지 이미지를 원격 저장소에 올리고 다운받을 수 있다. Docker가 유저들의 선택을 받은 한가지 이유이다.
+1. Docker는 Layer를 통해 이미지를 효율적으로 관리할 수 있으며, DockerHub를 통해 누구던지 이미지를 원격 저장소에 올리고 다운받을 수 있다. 이런 장점이 Docker가 유저들의 선택을 받은 이유 중 하나이다.
 2. Image를 관리할 때 UFS 방식을 사용한다. UFS 방식은 다른 파일시스템 위에서 동작하는 파일시스템으로 여러 파일시스템을 합칠 수 있다. Docker는 이를 통해 여러 Layer를 하나로 합쳐 관리한다.
 3. UFS의 병합 방식에 대해 간단히 설명하면 다음과 같다. UFS는 lower, upper, work, merged 디렉터리가 있으며 lower은 읽기만 가능하며, upper은 읽고 쓰는 것이 가능하다. lower & upper의 모든 이미지를 아래에서부터 덮어쓰는 방식으로 병합하여 merged를 형성한다.
 
