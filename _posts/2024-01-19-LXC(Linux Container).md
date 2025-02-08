@@ -13,10 +13,7 @@ LXC란?
 <!--more-->
 
 
-**최근에 Docker에서 관련된 포스트가 나와 업데이트 합니다. 한번 읽어보시면 좋을 것 같습니다. (24/06/25)
-
-
-[https://www.docker.com/blog/lxc-vs-docker/](https://www.docker.com/blog/lxc-vs-docker/)
+(24/06/25 업데이트) 최근에 Docker에서 관련된 포스트가 나와 업데이트 합니다. 한번 읽어보시면 좋을 것 같습니다. [https://www.docker.com/blog/lxc-vs-docker/](https://www.docker.com/blog/lxc-vs-docker/)
 
 
 ## LXC란?
@@ -28,11 +25,14 @@ Linux Container의 약자로, 리눅스 인스턴스 내에서 컨테이너를 �
 ## Docker와 LXC
 
 
-LXC가 나온 후 몇년 뒤  Docker가 나왔다. 둘은 약간의 차이가 있는데, LXC는 OS 수준의 가상화를 제공하고, Docker는 응용 수준의 가상화를 제공한다. 리소스 활용은 LXC가 더 효율적이나, 프로젝트를 배포하는 애플리케이션 수준에서는 Docker가 훨씬 편하다. Docker는 리눅스 컨테이너 기술을 이용하여 개발자에게 더 편리한 기능을 제공한다. 
+2008년에 LXC가 나온 후 5년 뒤  Docker가 나왔다. 둘은 약간의 차이가 있는데, LXC는 OS 수준의 가상화를 제공하고, Docker는 응용 수준의 가상화를 제공한다. 리소스 활용은 LXC가 더 효율적이나, 프로젝트를 배포하는 애플리케이션 수준에서는 Docker가 훨씬 편하다. Docker는 리눅스 컨테이너 기술을 이용하여 개발자에게 더 편리한 기능을 제공한다.  
 
 - 이미지: Docker의 이미지는 응용 수준, 예를 들면 웹 애플리케이션과 같은 컨테이너 이미지이다. 하지만 LXC는 OS 수준 이미지다, 웹 애플리케이션을 동작시키려면 컨테이너를 띄운 뒤 안에 접속하여 추가적으로 작업해야 한다.
 - Dockfile: Dockerfile 혹은 Docker-compose를 통해 IaC 방식으로 쉽게 컨테이너를 설정할 수 있지만, LXC는 그렇지 않다.
 	- 네트워크 설정, 의존성 등 환경설정에 어려움이 많다. **즉, 일관된 환경을 제공하지 못한다.**
+
+애플리케이션 수준에선 그렇지만, OS 수준이나 HW 수준에서는 LXC가 성능이 더 좋다. LXC의 Container Rumtime은 Kernel로 통합되면서 시스템 리소스를 더 효율적으로 사용할 수 있다. 
+
 
 ## LXC 사용해보기
 
