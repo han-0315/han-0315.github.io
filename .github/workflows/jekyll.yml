@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt-get install build-essential ruby-dev        
       - name: Setup Ruby, JRuby and TruffleRuby
         uses: ruby/setup-ruby@v1.98.0
         with:
