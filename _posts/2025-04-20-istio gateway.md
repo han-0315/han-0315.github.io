@@ -328,7 +328,7 @@ docker exec -it myk8s-control-plane istioctl proxy-config routes deploy/istio-in
 istio 동작을 확인하기 위해 실제 애플리케이션을 배포해본다.
 
 
-```json
+```bash
 kubectl apply -f services/catalog/kubernetes/catalog.yaml -n istioinaction
 kubectl apply -f services/webapp/kubernetes/webapp.yaml -n istioinaction
 ```
@@ -373,7 +373,7 @@ kubectl images -n istioinaction
 ```
 
 
-추가적으로 istioctl을 사용해서 라우팅규치을 살펴보면, 아래와 같이 서비스에 대한 정보를 볼 수 있다.
+추가적으로 istioctl을 사용해서 라우팅규칙을 살펴보면, 아래와 같이 서비스에 대한 정보를 볼 수 있다.
 
 
 ```bash
@@ -1301,3 +1301,6 @@ kubectl stern -n istioinaction -l app=webapp -c istio-proxy
 
 실제 프로덕션환경에서는 로그 쌓는 것도 필수지만, 로그로 인해 full이 발생하지 않도록, 백업 및 제거 정책도 중요해보인다.
 
+
+### 마치며
+여기서는 Istio Ingress Gateway에 대해 자세히 살펴봤다. 각 기능 지원을 직접 실습을 해보며 확인을 해보면서 Istio 리소스에 대한 이해도를 높일 수 있었다. 
