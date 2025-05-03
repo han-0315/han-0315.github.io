@@ -513,5 +513,10 @@
     "id": "1e8338d795b880f9b5adcab23dcdeee4",
     "update_date": "2025-05-04",
     "post_title": "2025-05-04-Istio Observability(분산 트레이싱)"
+  },
+  {
+    "id": "1e8338d795b88080883dc02d840cffff",
+    "update_date": "2025-05-04",
+    "post_title": "2025-05-04-Istio Observability(DashBoard)"
   }
 ]
