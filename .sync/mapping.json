@@ -503,5 +503,10 @@
     "id": "1e1338d795b880cd88e9ed885430b787",
     "update_date": "2025-04-27",
     "post_title": "2025-04-27-복원성"
+  },
+  {
+    "id": "1e8338d795b88084a02fe96a6acdf05a",
+    "update_date": "2025-05-04",
+    "post_title": "2025-05-04-Istio Observability(Metric)"
   }
 ]
