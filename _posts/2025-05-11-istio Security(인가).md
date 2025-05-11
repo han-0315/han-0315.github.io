@@ -34,7 +34,13 @@ istio Security 인가부분 살펴보기
 ![image.png](/assets/img/post/istio%20Security(인가)/2.png)
 
 
-### 형식
+출처: 스터디원(istio security)
+
+
+istio의 인가 정책 리소스는 **AuthorizationPolicy** 하나만 존재한다. 먼저 해당 리소스의 형식에 대해 살펴보자.
+
+
+### 리소스 형식
 
 - scope
 	- selector(`matchLabel`)
@@ -50,6 +56,9 @@ istio Security 인가부분 살펴보기
 	- `when`: 별도 커스텀 조건(key, value)
 		- 사용할 수 있는 key는 [docs](https://istio.io/latest/docs/reference/config/security/conditions/)에서 확인할 수 있다.
 - action: `ALLOW`, `DENY`, `AUDIT`, `CUSTOM`, `empty(DENY)`
+
+ex) webapp으로 향하는 트래픽 중 `/api/catalog*` 에 대한 트래픽만 허용
+
 
 ```yaml
 apiVersion: "security.istio.io/v1beta1"
