@@ -1,7 +1,7 @@
 ---
 layout: post
 title: istio Security(인증)
-date: 2025-05-09 09:01 +0900 
+date: 2025-05-10 09:01 +0900 
 description: istio Security(인증) 살펴보기
 category: [Kubernetes, Network] 
 tags: [istio, CloudNet, Kubernetes, Network, istio#5, Security, 인증] 
@@ -16,7 +16,7 @@ istio Security(인증) 살펴보기
 ### 들어가며
 
 
-kubernetes에서는 자체의 인증/인가/admisstion controller 기능이 있지만, 해당 부분은 kube API를 사용하는 것에 있는 보안 절차이다. istio에서는 서비스 간의 네트워크 통신에서 인증 기능을 설정할 수 있다. 만약 클라우드 환경이고 간혈적으로 public network를 이용한다면 이런 기능은 필수라고 생각된다. 또, 온프렘이더라도 공용(멀티 테넌시)클러스터를 운영한다면 istio에 이런 트래픽 보안 기능에 대한 니즈가 있지 않을까 싶다.
+kubernetes에서는 자체의 인증/인가/admisstion controller 기능이 있지만, 해당 부분은 kube API에 대한 보안 절차이다. istio에서는 서비스 간의 네트워크 통신에서 인증 기능을 설정할 수 있다. 만약 클라우드 환경이고 간혈적으로 public network를 이용한다면 이런 기능은 필수라고 생각된다. 또, 온프렘이더라도 공용(멀티 테넌시)클러스터를 운영한다면 istio에 이런 트래픽 보안 기능에 대한 니즈가 있지 않을까 싶다.
 
 
 ### 실습 환경
@@ -92,8 +92,8 @@ curl -v 8 https://google.com
 - mtls.mode
 	- STRICT: mTLS 강제화, mTLS가 아닌 트래픽은 허용하지 않음
 	- PERMISSIVE: 평문, mTLS 모두 허용
-	- UNSET
-	- DISABLE
+	- UNSET: 상위 정책 상속
+	- DISABLE: 비활성화
 
 ```bash
 apiVersion: "security.istio.io/v1beta1"
@@ -177,7 +177,7 @@ istioinaction        webapp-7685bcb84-l5c4m                        2/2     Runni
 ### 특정 엔드포인트만 허용
 
 
-webapp으로 들어오는 트래픽은 mTLS가 아니어도록 허용하도록 아래와 같이 설정한다.
+webapp으로 들어오는 트래픽은 mTLS가 아닌 경우, 즉 평문도 허용하도록 아래와 같이 설정한다.
 
 
 ```bash
