@@ -43,7 +43,7 @@ istio [공식문서](https://istio.io/latest/docs/concepts/security/)에 나와�
 참고로 istio의 보안 아키텍처는 아래와 같다.
 
 
-서비스 간 통신에서 mTLS를 지원하고, istiod(control plane)에서 인증서 발급 등 보안과 관련된 작업을 담당한다. 
+서비스 간 통신에서 **mTLS를 지원하고**, istiod(control plane)에서 인증서 발급 등 보안과 관련된 작업을 담당한다. 
 
 
 ![image.png](/assets/img/post/istio%20Security/1.png)
@@ -98,7 +98,13 @@ istio에서는 **워크로드 엔드포인트** = istio proxy(pilot agent)가 �
 ![image.png](/assets/img/post/istio%20Security/3.png)
 
 
-이렇게 발급받은 ID 인증 체계를 기반으로 mTLS 통신을 진행한다. 실습과 관련된 내용은 다음 편의 PeerAuthentication 실습 페이지에서 확인할 수 있다.
+이렇게 발급받은 ID 인증 체계를 기반으로 mTLS 통신을 진행한다. 실습과 관련된 내용은 다음 편의 PeerAuthentication 실습 페이지에서 확인할 수 있다. 그 외로 istio는 인증/인가에 대한 설정을 모두 지원한다. 인증과정에서는 mTLS 통신이 아니면 거부할 수 있고, 클라이언트의 요청에 대한 인증을 JWT로 강제할 수 있다. 또, 인가에서는 각 서비스마다 요청 권한을 설정할 수 있다.
+
+
+![image.png](/assets/img/post/istio%20Security/4.png)
+
+
+출처: 스터디원(istio security)
 
 
 ### 마치며
