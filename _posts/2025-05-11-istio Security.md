@@ -49,6 +49,9 @@ istio [공식문서](https://istio.io/latest/docs/concepts/security/)에 나와�
 ![image.png](/assets/img/post/istio%20Security/1.png)
 
 
+출처: [https://istio.io/latest/docs/concepts/security/#high-level-architecture](https://istio.io/latest/docs/concepts/security/#high-level-architecture)
+
+
 ## SPIFFE
 
 
