@@ -538,5 +538,10 @@
     "id": "1f1338d795b880c38712df0659b4b7a2",
     "update_date": "2025-05-18",
     "post_title": "2025-05-18-Istio 트러블 슈팅"
+  },
+  {
+    "id": "1f7338d795b880668c3ec2e47d676eb1",
+    "update_date": "2025-05-18",
+    "post_title": "2025-05-18-istio Ambient mode"
   }
 ]
