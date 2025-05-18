@@ -9,7 +9,7 @@ pin: false
 math: true
 mermaid: true
 ---
-
+istio Ambient mode 살펴보기
 <!--more-->
 
 
