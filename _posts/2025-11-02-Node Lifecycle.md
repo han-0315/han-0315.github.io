@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Node Life Cycle
+title: Node LifeCycle
 date: 2025-11-02 09:00 +0900 
-description: Node Life Cycle 살펴보기
+description: Node LifeCycle 살펴보기
 category: [Kubernetes, Node] 
 tags: [Node, Lifecycle, Evict, Kubelet] 
 pin: false
