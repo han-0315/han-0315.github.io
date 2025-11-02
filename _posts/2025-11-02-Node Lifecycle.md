@@ -30,7 +30,7 @@ mermaid: true
 
 
 
-```json
+```bash
 curl -s -X GET http://127.0.0.1:8001/api/v1/nodes/test-worker/proxy/configz | jq
 {
   "kubeletconfig": {
@@ -121,7 +121,7 @@ kubelet은 시작하는 과정에서 노드 등록을 진행하므로 kubelet을
 
 - 노드 확인
 
-```json
+```bash
 kubectl get nodes 
 NAME                 STATUS   ROLES           AGE     VERSION
 test-control-plane   Ready    control-plane   5m19s   v1.31.0
@@ -131,13 +131,13 @@ test-worker2         Ready    <none>          5m8s    v1.31.0
 
 - 테스트 노드 제거
 
-```json
+```bash
 kubectl delete nodes test-worker
 node "test-worker" deleted
 ```
 
 
-```json
+```bash
 kubectl get nodes
 NAME                 STATUS   ROLES           AGE     VERSION
 test-control-plane   Ready    control-plane   5m31s   v1.31.0
@@ -154,7 +154,7 @@ test-worker2         Ready    <none>          5m20s   v1.31.0
 
 - kubelet restart(in worker)
 
-```json
+```bash
 systemctl restart kubelet
 ```
 
@@ -165,7 +165,7 @@ kubelet 로그를 확인해보면 먼저 1차적으로 초기 생성시 등록�
 *재등록시 `Error updating node status` 로그가 바로 보이나, 이후 문제없이 상태가 동기화된다.
 
 
-```json
+```bash
 journalctl -u kubelet --since "1 hour ago" | grep -A2 'Attempting to register node' 
 Nov 02 09:04:12 test-worker kubelet[214]: I1102 09:04:12.877102     214 kubelet_node_status.go:72] "Attempting to register node" node="test-worker"
 Nov 02 09:04:12 test-worker kubelet[214]: I1102 09:04:12.880518     214 kubelet_node_status.go:75] "Successfully registered node" node="test-worker"
@@ -181,7 +181,7 @@ Nov 02 09:09:38 test-worker kubelet[773]: E1102 09:09:38.117903     773 kubelet_
 kubectl로 노드 리스트를 확인하면 아래와 같이 다시 등록된 test-worker를 확인할 수 있다.
 
 
-```json
+```bash
 kubectl get nodes
 NAME                 STATUS   ROLES           AGE     VERSION
 test-control-plane   Ready    control-plane   5m39s   v1.31.0
